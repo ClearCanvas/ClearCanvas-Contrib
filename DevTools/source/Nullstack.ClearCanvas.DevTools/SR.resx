@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="fmCommandName" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="fmCurrentCommandName" xml:space="preserve">
+    <value>* {0}</value>
+  </data>
+  <data name="fmHashcode" xml:space="preserve">
+    <value>0x{0:X8}</value>
+  </data>
+  <data name="fmIndex" xml:space="preserve">
+    <value>[{0}]</value>
+  </data>
+  <data name="fmListDescription" xml:space="preserve">
+    <value>Count = {0}</value>
+  </data>
+  <data name="mnActionModels" xml:space="preserve">
+    <value>&amp;Action Models</value>
+  </data>
+  <data name="mnAdvanceLog" xml:space="preserve">
+    <value>&amp;Advance Log</value>
+  </data>
+  <data name="mnApplicationSettings" xml:space="preserve">
+    <value>Application &amp;Settings</value>
+  </data>
+  <data name="mnBadFiles" xml:space="preserve">
+    <value>&amp;Bad Files</value>
+  </data>
+  <data name="mnCommandHistoryInspector" xml:space="preserve">
+    <value>&amp;Command History Inspector</value>
+  </data>
+  <data name="mnCommon" xml:space="preserve">
+    <value>&amp;Common</value>
+  </data>
+  <data name="mnConfigure" xml:space="preserve">
+    <value>&amp;Configure</value>
+  </data>
+  <data name="mnDataStore" xml:space="preserve">
+    <value>&amp;Data Store</value>
+  </data>
+  <data name="mnDebug" xml:space="preserve">
+    <value>&amp;Debug</value>
+  </data>
+  <data name="mnDelete" xml:space="preserve">
+    <value>&amp;Delete</value>
+  </data>
+  <data name="mnError" xml:space="preserve">
+    <value>&amp;Error</value>
+  </data>
+  <data name="mnExecutable" xml:space="preserve">
+    <value>&amp;Executable</value>
+  </data>
+  <data name="mnFatal" xml:space="preserve">
+    <value>&amp;Fatal</value>
+  </data>
+  <data name="mnFileStore" xml:space="preserve">
+    <value>&amp;File Store</value>
+  </data>
+  <data name="mnFolders" xml:space="preserve">
+    <value>&amp;Folders</value>
+  </data>
+  <data name="mnInfo" xml:space="preserve">
+    <value>&amp;Info</value>
+  </data>
+  <data name="mnLogLevel" xml:space="preserve">
+    <value>Logging Le&amp;vel</value>
+  </data>
+  <data name="mnLogs" xml:space="preserve">
+    <value>&amp;Logs</value>
+  </data>
+  <data name="mnMarkLogPosition" xml:space="preserve">
+    <value>Insert Log &amp;Marker</value>
+  </data>
+  <data name="mnMonitor" xml:space="preserve">
+    <value>&amp;Monitor</value>
+  </data>
+  <data name="mnOpen" xml:space="preserve">
+    <value>&amp;Open</value>
+  </data>
+  <data name="mnPlugins" xml:space="preserve">
+    <value>&amp;Plugins</value>
+  </data>
+  <data name="mnService" xml:space="preserve">
+    <value>Ser&amp;vice</value>
+  </data>
+  <data name="mnServiceLog" xml:space="preserve">
+    <value>Ser&amp;vice Log</value>
+  </data>
+  <data name="mnSynchronizeDeviceXmls" xml:space="preserve">
+    <value>&amp;Synchronize Device XMLs</value>
+  </data>
+  <data name="mnTail" xml:space="preserve">
+    <value>&amp;Tail</value>
+  </data>
+  <data name="mnWarn" xml:space="preserve">
+    <value>&amp;Warn</value>
+  </data>
+  <data name="mnWorkstationLog" xml:space="preserve">
+    <value>&amp;Workstation Log</value>
+  </data>
+  <data name="msgActionModelDeleted" xml:space="preserve">
+    <value>The action model has been deleted. You need to restart the application to see the changes and recreate the action model.</value>
+  </data>
+  <data name="msgConfirmDeleteActionModel" xml:space="preserve">
+    <value>Are you sure you want to permanently delete the action model?</value>
+  </data>
+  <data name="msgConfirmDeleteAllUserSettings" xml:space="preserve">
+    <value>Are you sure you want to permanently delete all user settings files for ClearCanvas.Desktop.Executable.exe?</value>
+  </data>
+  <data name="szCommandHistoryInspector" xml:space="preserve">
+    <value>Command History Inspector</value>
+  </data>
+  <data name="szDevTools" xml:space="preserve">
+    <value>Developer Tools</value>
+  </data>
+  <data name="szServiceLog" xml:space="preserve">
+    <value>Service Log</value>
+  </data>
+  <data name="szWorkstationLog" xml:space="preserve">
+    <value>Workstation Log</value>
+  </data>
+</root>

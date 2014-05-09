@@ -1,0 +1,104 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4D0864D4-F05C-46F7-AAE7-FFD7DDF89832}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClipboardDicomTools</RootNamespace>
+    <AssemblyName>ClipboardDicomTools</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)\build\Debug\plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)\build\Release\plugins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ClearCanvas.Common, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)\build\$(ConfigurationName)\common\ClearCanvas.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ClearCanvas.Desktop, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)\build\$(ConfigurationName)\plugins\ClearCanvas.Desktop.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ClearCanvas.Dicom, Version=2.0.12040.35799, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ClearCanvas.ImageViewer, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(SolutionDir)\build\$(ConfigurationName)\plugins\ClearCanvas.ImageViewer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ClearCanvas.ImageViewer.Clipboard, Version=2.0.12040.35799, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ClearCanvas.ImageViewer.Configuration, Version=2.0.12040.35799, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ClearCanvas.ImageViewer.Services, Version=2.0.12040.35799, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ClearCanvas.ImageViewer.Services.Tools, Version=2.0.12040.35799, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ClearCanvas.Utilities.DicomEditor, Version=2.0.12040.35799, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\System.ServiceModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClipboardDicomEditTool.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveAsDicomTool.cs" />
+    <Compile Include="SendToDicomTool.cs" />
+    <Compile Include="SR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SR.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SR.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\ClipboardDicomEditToolLarge.png" />
+    <EmbeddedResource Include="Icons\ClipboardDicomEditToolMedium.png" />
+    <EmbeddedResource Include="Icons\ClipboardDicomEditToolSmall.png" />
+    <EmbeddedResource Include="Icons\SaveAsDicomToolLarge.png" />
+    <EmbeddedResource Include="Icons\SaveAsDicomToolMedium.png" />
+    <EmbeddedResource Include="Icons\SaveAsDicomToolSmall.png" />
+    <EmbeddedResource Include="Icons\SendStudyToolLarge.png" />
+    <EmbeddedResource Include="Icons\SendStudyToolMedium.png" />
+    <EmbeddedResource Include="Icons\SendStudyToolSmall.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "C:\Program Files\ClearCanvas\ClearCanvas Workstation\plugins"
+copy "$(TargetPath)" "C:\Users\Seth\Documents\My Dropbox\DICOM\ClearCanvas\plugins"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

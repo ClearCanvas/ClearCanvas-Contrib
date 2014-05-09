@@ -1,0 +1,2691 @@
+Index: app.config
+===================================================================
+--- app.config	(revision 16135)
++++ app.config	(working copy)
+@@ -2,11 +2,11 @@
+ <configuration>
+     <configSections>
+         <sectionGroup name="applicationSettings" type="System.Configuration.ApplicationSettingsGroup, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+-            <section name="ClearCanvas.ImageServer.Services.Archiving.Hsm.HsmSettings" type="System.Configuration.ClientSettingsSection, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
++            <section name="Martin.ImageServer.Services.Archiving.Nas.NasSettings" type="System.Configuration.ClientSettingsSection, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+         </sectionGroup>
+     </configSections>
+     <applicationSettings>
+-        <ClearCanvas.ImageServer.Services.Archiving.Hsm.HsmSettings>
++        <Martin.ImageServer.Services.Archiving.Nas.NasSettings>
+             <setting name="ArchiveThreadCount" serializeAs="String">
+                 <value>1</value>
+             </setting>
+@@ -25,6 +25,6 @@
+             <setting name="PollDelayMilliseconds" serializeAs="String">
+                 <value>15000</value>
+             </setting>
+-        </ClearCanvas.ImageServer.Services.Archiving.Hsm.HsmSettings>
++        </Martin.ImageServer.Services.Archiving.Nas.NasSettings>
+     </applicationSettings>
+ </configuration>
+\ No newline at end of file
+Index: ApplyRulesCommand.cs
+===================================================================
+--- ApplyRulesCommand.cs	(revision 16135)
++++ ApplyRulesCommand.cs	(working copy)
+@@ -40,7 +40,7 @@
+ using ClearCanvas.ImageServer.Model;
+ using ClearCanvas.ImageServer.Rules;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	/// <summary>
+ 	/// <see cref="ServerCommand"/> for applying rules to a study after it has been restored.
+Index: ArchiveProcessorContext.cs
+===================================================================
+--- ArchiveProcessorContext.cs	(revision 16135)
++++ ArchiveProcessorContext.cs	(working copy)
+@@ -35,7 +35,7 @@
+ using ClearCanvas.ImageServer.Common.CommandProcessor;
+ using ClearCanvas.ImageServer.Model;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+     /// <summary>
+     /// Represents the execution context for an <see cref="ArchiveQueue"/>
+@@ -43,7 +43,7 @@
+     public class ArchiveProcessorContext : ExecutionContext
+     {
+         #region Private Fields
+-        private readonly Model.ArchiveQueue _item;
++        private readonly ArchiveQueue _item;
+         #endregion
+ 
+         #region Constructors
+Index: ClearCanvas.ImageServer.Services.Archiving.Hsm.csproj
+===================================================================
+--- ClearCanvas.ImageServer.Services.Archiving.Hsm.csproj	(revision 16135)
++++ ClearCanvas.ImageServer.Services.Archiving.Hsm.csproj	(working copy)
+@@ -1,123 +0,0 @@
+-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+-  <PropertyGroup>
+-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+-    <ProductVersion>9.0.30729</ProductVersion>
+-    <SchemaVersion>2.0</SchemaVersion>
+-    <ProjectGuid>{BE27922C-C8D7-4190-8F24-5D7C1623CAFA}</ProjectGuid>
+-    <OutputType>Library</OutputType>
+-    <AppDesignerFolder>Properties</AppDesignerFolder>
+-    <RootNamespace>ClearCanvas.ImageServer.Services.Archiving.Hsm</RootNamespace>
+-    <AssemblyName>ClearCanvas.ImageServer.Services.Archiving.Hsm</AssemblyName>
+-    <FileUpgradeFlags>
+-    </FileUpgradeFlags>
+-    <OldToolsVersion>2.0</OldToolsVersion>
+-    <UpgradeBackupLocation>
+-    </UpgradeBackupLocation>
+-  </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+-    <DebugSymbols>true</DebugSymbols>
+-    <DebugType>full</DebugType>
+-    <Optimize>false</Optimize>
+-    <OutputPath>bin\Debug\</OutputPath>
+-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+-    <ErrorReport>prompt</ErrorReport>
+-    <WarningLevel>4</WarningLevel>
+-  </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+-    <DebugType>pdbonly</DebugType>
+-    <Optimize>true</Optimize>
+-    <OutputPath>bin\Release\</OutputPath>
+-    <DefineConstants>TRACE</DefineConstants>
+-    <ErrorReport>prompt</ErrorReport>
+-    <WarningLevel>4</WarningLevel>
+-  </PropertyGroup>
+-  <ItemGroup>
+-    <Reference Include="Ionic.Zip, Version=1.7.2.11, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+-      <SpecificVersion>False</SpecificVersion>
+-      <HintPath>..\..\..\..\ReferencedAssemblies\Ionic.Zip.dll</HintPath>
+-    </Reference>
+-    <Reference Include="System" />
+-    <Reference Include="System.Data" />
+-    <Reference Include="System.Xml" />
+-  </ItemGroup>
+-  <ItemGroup>
+-    <Compile Include="ApplyRulesCommand.cs" />
+-    <Compile Include="ArchiveProcessorContext.cs" />
+-    <Compile Include="CreateStudyZipCommand.cs" />
+-    <Compile Include="ExtractZipCommand.cs" />
+-    <Compile Include="ExtractZipFileAndReplaceCommand.cs" />
+-    <Compile Include="HsmArchive.cs" />
+-    <Compile Include="HsmArchiveService.cs" />
+-    <Compile Include="HsmRestoreService.cs" />
+-    <Compile Include="HsmSettings.Designer.cs">
+-      <AutoGen>True</AutoGen>
+-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+-      <DependentUpon>HsmSettings.settings</DependentUpon>
+-    </Compile>
+-    <Compile Include="HsmStudyArchive.cs" />
+-    <Compile Include="HsmStudyRestore.cs" />
+-    <Compile Include="Properties\AssemblyInfo.cs" />
+-    <Compile Include="RestoreProcessorContext.cs" />
+-    <Compile Include="StudyStorageValidator.cs" />
+-    <Compile Include="UpdateStudySizeInDBCommand.cs" />
+-    <Compile Include="UpdateStudyStateCommand.cs" />
+-  </ItemGroup>
+-  <ItemGroup>
+-    <ProjectReference Include="..\..\..\..\Common\ClearCanvas.Common.csproj">
+-      <Project>{F6EAD428-E6CF-4DF6-B2F3-D33D532C5343}</Project>
+-      <Name>ClearCanvas.Common</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\..\Dicom\ClearCanvas.Dicom.csproj">
+-      <Project>{AD9ECE2B-8268-4115-8DC8-860FBD011FFF}</Project>
+-      <Name>ClearCanvas.Dicom</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\..\Enterprise\Common\ClearCanvas.Enterprise.Common.csproj">
+-      <Project>{B5EBFFD7-6641-4932-91C9-4C4322B41868}</Project>
+-      <Name>ClearCanvas.Enterprise.Common</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\..\Enterprise\Core\ClearCanvas.Enterprise.Core.csproj">
+-      <Project>{431E9444-9915-4D49-B92D-9B7EC086622A}</Project>
+-      <Name>ClearCanvas.Enterprise.Core</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\Common\ClearCanvas.ImageServer.Common.csproj">
+-      <Project>{DDFB1D25-75AE-43A6-A7A5-33D173EFFD04}</Project>
+-      <Name>ClearCanvas.ImageServer.Common</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\Core\ClearCanvas.ImageServer.Core.csproj">
+-      <Project>{64DD80D0-2B72-46C0-8F6E-382CA1EAFF9D}</Project>
+-      <Name>ClearCanvas.ImageServer.Core</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\Enterprise\ClearCanvas.ImageServer.Enterprise.csproj">
+-      <Project>{86CA6EDB-DE59-45E9-8BD8-832FBB3F8009}</Project>
+-      <Name>ClearCanvas.ImageServer.Enterprise</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\Model\ClearCanvas.ImageServer.Model.csproj">
+-      <Project>{2C9126D3-5B73-4539-BBC9-D56E6097D335}</Project>
+-      <Name>ClearCanvas.ImageServer.Model</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\..\..\Rules\ClearCanvas.ImageServer.Rules.csproj">
+-      <Project>{523EDDC1-7C6E-404D-A8ED-5F043F5E6BE3}</Project>
+-      <Name>ClearCanvas.ImageServer.Rules</Name>
+-    </ProjectReference>
+-    <ProjectReference Include="..\ClearCanvas.ImageServer.Services.Archiving.csproj">
+-      <Project>{90C91F02-8AD3-43D1-B8C3-C0469213E3E5}</Project>
+-      <Name>ClearCanvas.ImageServer.Services.Archiving</Name>
+-    </ProjectReference>
+-  </ItemGroup>
+-  <ItemGroup>
+-    <None Include="app.config" />
+-    <None Include="HsmSettings.settings">
+-      <Generator>SettingsSingleFileGenerator</Generator>
+-      <LastGenOutput>HsmSettings.Designer.cs</LastGenOutput>
+-    </None>
+-  </ItemGroup>
+-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+-       Other similar extension points exist, see Microsoft.Common.targets.
+-  <Target Name="BeforeBuild">
+-  </Target>
+-  <Target Name="AfterBuild">
+-  </Target>
+-  -->
+-</Project>
+\ No newline at end of file
+Index: CreateStudyZipCommand.cs
+===================================================================
+--- CreateStudyZipCommand.cs	(revision 16135)
++++ CreateStudyZipCommand.cs	(working copy)
+@@ -35,7 +35,7 @@
+ using ClearCanvas.ImageServer.Common.CommandProcessor;
+ using Ionic.Zip;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	/// <summary>
+ 	/// <see cref="ServerCommand"/> to create Zip file containing all the dcm files in a study
+@@ -69,7 +69,7 @@
+ 		{
+ 			using (ZipFile zip = new ZipFile(_zipFile))
+ 			{
+-				zip.ForceNoCompression = !HsmSettings.Default.CompressZipFiles;
++				zip.ForceNoCompression = !NasSettings.Default.CompressZipFiles;
+ 				zip.TempFileFolder = _tempFolder;
+ 				zip.Comment = String.Format("Archive for study {0}", _studyXml.StudyInstanceUid);
+ 				zip.UseZip64WhenSaving = Zip64Option.AsNecessary;
+Index: ExtractZipCommand.cs
+===================================================================
+--- ExtractZipCommand.cs	(revision 16135)
++++ ExtractZipCommand.cs	(working copy)
+@@ -33,7 +33,7 @@
+ using ClearCanvas.ImageServer.Common.CommandProcessor;
+ using Ionic.Zip;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	/// <summary>
+ 	/// <see cref="ServerCommand"/> for extracting a zip file containing study files to a specific directory.
+Index: ExtractZipFileAndReplaceCommand.cs
+===================================================================
+--- ExtractZipFileAndReplaceCommand.cs	(revision 16135)
++++ ExtractZipFileAndReplaceCommand.cs	(working copy)
+@@ -34,7 +34,7 @@
+ using ClearCanvas.ImageServer.Common.CommandProcessor;
+ using Ionic.Zip;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	/// <summary>
+ 	/// Class for extracting a file from a zip over the top of another file, and preserving
+Index: HsmArchive.cs
+===================================================================
+--- HsmArchive.cs	(revision 16135)
++++ HsmArchive.cs	(working copy)
+@@ -1,200 +0,0 @@
+-﻿#region License
+-
+-// Copyright (c) 2009, ClearCanvas Inc.
+-// All rights reserved.
+-//
+-// Redistribution and use in source and binary forms, with or without modification, 
+-// are permitted provided that the following conditions are met:
+-//
+-//    * Redistributions of source code must retain the above copyright notice, 
+-//      this list of conditions and the following disclaimer.
+-//    * Redistributions in binary form must reproduce the above copyright notice, 
+-//      this list of conditions and the following disclaimer in the documentation 
+-//      and/or other materials provided with the distribution.
+-//    * Neither the name of ClearCanvas Inc. nor the names of its contributors 
+-//      may be used to endorse or promote products derived from this software without 
+-//      specific prior written permission.
+-//
+-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+-// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+-// PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+-// OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+-// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+-// STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+-// OF SUCH DAMAGE.
+-
+-#endregion
+-
+-using System.Xml;
+-using ClearCanvas.Common;
+-using ClearCanvas.Enterprise.Core;
+-using ClearCanvas.ImageServer.Common;
+-using ClearCanvas.ImageServer.Model;
+-using ClearCanvas.ImageServer.Model.Brokers;
+-using ClearCanvas.ImageServer.Model.EntityBrokers;
+-using ClearCanvas.ImageServer.Model.Parameters;
+-
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
+-{
+-	/// <summary>
+-	/// HSM Based archive plugin.
+-	/// </summary>
+-	/// <remarks>
+-	/// <para>
+-	/// The <see cref="HsmArchive"/> class is a plugin to implement an 
+-	/// Hierarchical Storage Management archive.  Among the HSM style interfaces 
+-	/// to automated tape libraries are the Sun/StorageTek QFS/SAMFS and Legato DiskXtender.  
+-	/// </para>
+-	/// <para>
+-	/// The <see cref="HsmArchive"/> class takes as input an accessable directory where
+-	/// the filesystem for the HSM has been mounted.  When storing studies to the HSM
+-	/// filesystem, a hierarchical folder structure is created.  At the root, a folder
+-	/// typically based on Study Date is created.  Next, a folder named after Study Instance
+-	/// UID of the study being archived is created.  Finally, the ZIP file for the study
+-	/// is placed in this folder.  The zip file has a timestamp as the filename.
+-	/// </para>
+-	/// <para>
+-	/// The zip file created is not in a compressed format.  It assumes the images themselves
+-	/// are compressed, or the HSM filesystem / underlying tape drives are doing the compression.
+-	/// </para>
+-	/// <para>
+-	/// When a restore of a study occurs, the HsmArchive will do an initial read of the zip 
+-	/// file.  If the read fails, it will reschedule the read after a configurable time delay,
+-	/// allowing the HSM system to read the zip file off disk and restore it.
+-	/// </para>
+-	/// <para>
+-	/// The HsmArchive class is basically a shell for the archive.  A configurable number of threads
+-	/// are created to handle the actual archiving and restoring of data.
+-	/// </para>
+-	/// </remarks>
+-	[ExtensionOf(typeof(ImageServerArchiveExtensionPoint))]
+-	public class HsmArchive : ImageServerArchiveBase
+-	{
+-		private HsmArchiveService _archiveService;
+-		private HsmRestoreService _restoreService;
+-		
+-		private string _hsmPath;
+-
+-		public string HsmPath
+-		{
+-			get { return _hsmPath; }
+-		}
+-
+-		/// <summary>
+-		/// The <see cref="PartitionArchive"/> associated with the HsmArchive.
+-		/// </summary>
+-		public PartitionArchive PartitionArchive
+-		{
+-			get { return _partitionArchive; }
+-		}
+-
+-		/// <summary>
+-		/// The Archive Type.
+-		/// </summary>
+-		public override ArchiveTypeEnum ArchiveType
+-		{
+-			get { return ArchiveTypeEnum.HsmArchive; }
+-		}
+-
+-		public override RestoreQueue GetRestoreCandidate()
+-		{
+-			RestoreQueue queueItem;
+-
+-			using (IUpdateContext updateContext = PersistentStore.OpenUpdateContext(UpdateContextSyncMode.Flush))
+-			{
+-				QueryRestoreQueueParameters parms = new QueryRestoreQueueParameters();
+-
+-				parms.PartitionArchiveKey = _partitionArchive.GetKey();
+-				parms.ProcessorId = ServerPlatform.ProcessorId;
+-				parms.RestoreQueueStatusEnum = RestoreQueueStatusEnum.Restoring;
+-				IQueryRestoreQueue broker = updateContext.GetBroker<IQueryRestoreQueue>();
+-
+-				// Stored procedure only returns 1 result.
+-				queueItem = broker.FindOne(parms);
+-
+-	
+-
+-				if (queueItem != null)
+-					updateContext.Commit();
+-			}
+-			if (queueItem == null)
+-			{
+-				using (IUpdateContext updateContext = PersistentStore.OpenUpdateContext(UpdateContextSyncMode.Flush))
+-				{
+-					RestoreQueueSelectCriteria criteria = new RestoreQueueSelectCriteria();
+-					criteria.RestoreQueueStatusEnum.EqualTo(RestoreQueueStatusEnum.Restoring);
+-					IRestoreQueueEntityBroker restoreQueueBroker = updateContext.GetBroker<IRestoreQueueEntityBroker>();
+-
+-					if (restoreQueueBroker.Count(criteria) > HsmSettings.Default.MaxSimultaneousRestores)
+-						return null;
+-
+-					QueryRestoreQueueParameters parms = new QueryRestoreQueueParameters();
+-
+-					parms.PartitionArchiveKey = _partitionArchive.GetKey();
+-					parms.ProcessorId = ServerPlatform.ProcessorId;
+-					parms.RestoreQueueStatusEnum = RestoreQueueStatusEnum.Pending;
+-					IQueryRestoreQueue broker = updateContext.GetBroker<IQueryRestoreQueue>();
+-
+-					parms.RestoreQueueStatusEnum = RestoreQueueStatusEnum.Pending;
+-					queueItem = broker.FindOne(parms);
+-
+-					if (queueItem != null)
+-						updateContext.Commit();
+-				}
+-			}
+-			return queueItem;
+-		}
+-
+-		/// <summary>
+-		/// Start the archive.
+-		/// </summary>
+-		/// <param name="archive">The <see cref="PartitionArchive"/> to start.</param>
+-		public override void Start(PartitionArchive archive)
+-		{
+-			_partitionArchive = archive;
+-
+-			LoadServerPartition();
+-		
+-			_hsmPath = string.Empty;
+-
+-			//Hsm Archive specific Xml data.
+-			XmlElement element = archive.ConfigurationXml.DocumentElement;
+-			foreach (XmlElement node in element.ChildNodes)
+-				if (node.Name.Equals("RootDir"))
+-					_hsmPath = node.InnerText;
+-			
+-			// Start the restore service
+-			_restoreService = new HsmRestoreService("HSM Restore", this);
+-			_restoreService.StartService();
+-
+-			// If not "readonly", start the archive service.
+-			if (!_partitionArchive.ReadOnly)
+-			{
+-				_archiveService = new HsmArchiveService("HSM Archive", this);	
+-				_archiveService.StartService();
+-			}			
+-		}
+-
+-		/// <summary>
+-		/// Stop the archive.
+-		/// </summary>
+-		public override void Stop()
+-		{
+-			if (_restoreService != null)
+-			{
+-				_restoreService.StopService();
+-				_restoreService = null;
+-			}
+-
+-			if (_archiveService != null)
+-			{
+-				_archiveService.StopService();
+-				_archiveService = null;
+-			}
+-		}
+-	}
+-}
+Index: HsmArchiveExtension.cs
+===================================================================
+--- HsmArchiveExtension.cs	(revision 16135)
++++ HsmArchiveExtension.cs	(working copy)
+@@ -1,60 +0,0 @@
+-﻿#region License
+-
+-// Copyright (c) 2009, ClearCanvas Inc.
+-// All rights reserved.
+-//
+-// Redistribution and use in source and binary forms, with or without modification, 
+-// are permitted provided that the following conditions are met:
+-//
+-//    * Redistributions of source code must retain the above copyright notice, 
+-//      this list of conditions and the following disclaimer.
+-//    * Redistributions in binary form must reproduce the above copyright notice, 
+-//      this list of conditions and the following disclaimer in the documentation 
+-//      and/or other materials provided with the distribution.
+-//    * Neither the name of ClearCanvas Inc. nor the names of its contributors 
+-//      may be used to endorse or promote products derived from this software without 
+-//      specific prior written permission.
+-//
+-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+-// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+-// PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+-// OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+-// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+-// STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+-// OF SUCH DAMAGE.
+-
+-#endregion
+-
+-using System;
+-using ClearCanvas.Common;
+-using ClearCanvas.ImageServer.Model;
+-
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
+-{
+-	[ExtensionOf(typeof(ImageServerArchiveExtensionPoint))]
+-	public class HsmArchiveExtension : ImageServerArchiveBase
+-	{
+-		private PartitionArchive _partitionArchive;
+-
+-		public override ArchiveTypeEnum ArchiveType
+-		{
+-			get { return ArchiveTypeEnum.HsmArchive; }
+-		}
+-
+-		public override void Start(PartitionArchive archive)
+-		{
+-			_partitionArchive = archive;
+-
+-			throw new NotImplementedException();
+-		}
+-
+-		public override void Stop()
+-		{
+-			throw new NotImplementedException();
+-		}
+-	}
+-}
+\ No newline at end of file
+Index: HsmArchiveService.cs
+===================================================================
+--- HsmArchiveService.cs	(revision 16135)
++++ HsmArchiveService.cs	(working copy)
+@@ -1,117 +0,0 @@
+-﻿#region License
+-
+-// Copyright (c) 2009, ClearCanvas Inc.
+-// All rights reserved.
+-//
+-// Redistribution and use in source and binary forms, with or without modification, 
+-// are permitted provided that the following conditions are met:
+-//
+-//    * Redistributions of source code must retain the above copyright notice, 
+-//      this list of conditions and the following disclaimer.
+-//    * Redistributions in binary form must reproduce the above copyright notice, 
+-//      this list of conditions and the following disclaimer in the documentation 
+-//      and/or other materials provided with the distribution.
+-//    * Neither the name of ClearCanvas Inc. nor the names of its contributors 
+-//      may be used to endorse or promote products derived from this software without 
+-//      specific prior written permission.
+-//
+-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+-// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+-// PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+-// OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+-// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+-// STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+-// OF SUCH DAMAGE.
+-
+-#endregion
+-
+-using System;
+-using ClearCanvas.Common;
+-using ClearCanvas.Common.Utilities;
+-using ClearCanvas.ImageServer.Common;
+-using ClearCanvas.ImageServer.Model;
+-
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
+-{
+-	/// <summary>
+-	/// Service thread for handling archivals.
+-	/// </summary>
+-	public class HsmArchiveService : ThreadedService
+-	{
+-		private readonly HsmArchive _hsmArchive;
+-		private readonly ItemProcessingThreadPool<ArchiveQueue> _threadPool;
+-
+-		public HsmArchiveService(string name, HsmArchive hsmArchive) : base(name)
+-		{
+-			_hsmArchive = hsmArchive;
+-			_threadPool = new ItemProcessingThreadPool<ArchiveQueue>(HsmSettings.Default.ArchiveThreadCount);
+-			_threadPool.ThreadPoolName = "HsmArchive Pool";
+-		}
+-
+-		protected override void Initialize()
+-		{
+-			_hsmArchive.ResetFailedArchiveQueueItems();
+-
+-			// Start the thread pool
+-			if (!_threadPool.Active)
+-				_threadPool.Start();
+-		}
+-
+-		/// <summary>
+-		/// Execute the service.
+-		/// </summary>
+-		protected override void Run()
+-		{
+-			while (true)
+-			{
+-				if ((_threadPool.QueueCount + _threadPool.ActiveCount) < _threadPool.Concurrency)
+-				{
+-					try
+-					{
+-						ArchiveQueue queueItem = _hsmArchive.GetArchiveCandidate();
+-
+-						if (queueItem != null)
+-						{
+-							HsmStudyArchive archiver = new HsmStudyArchive(_hsmArchive);
+-							_threadPool.Enqueue(queueItem, archiver.Run);
+-						}
+-						else if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
+-						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _hsmArchive.PartitionArchive.Description);
+-							return;
+-						}
+-					}
+-					catch (Exception e)
+-					{
+-						Platform.Log(LogLevel.Error,e,"Unexpected exception when querying for archive candidates, rescheduling.");
+-						if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
+-						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _hsmArchive.PartitionArchive.Description);
+-							return;
+-						}
+-					}
+-				}
+-				else
+-				{
+-					if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
+-					{
+-						Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _hsmArchive.PartitionArchive.Description);
+-						return;
+-					}
+-				}
+-			}
+-		}
+-
+-		/// <summary>
+-		/// Stop the service.
+-		/// </summary>
+-		protected override void Stop()
+-		{
+-			_threadPool.Stop(true);
+-		}
+-	}
+-}
+Index: HsmRestoreService.cs
+===================================================================
+--- HsmRestoreService.cs	(revision 16135)
++++ HsmRestoreService.cs	(working copy)
+@@ -1,128 +0,0 @@
+-﻿#region License
+-
+-// Copyright (c) 2009, ClearCanvas Inc.
+-// All rights reserved.
+-//
+-// Redistribution and use in source and binary forms, with or without modification, 
+-// are permitted provided that the following conditions are met:
+-//
+-//    * Redistributions of source code must retain the above copyright notice, 
+-//      this list of conditions and the following disclaimer.
+-//    * Redistributions in binary form must reproduce the above copyright notice, 
+-//      this list of conditions and the following disclaimer in the documentation 
+-//      and/or other materials provided with the distribution.
+-//    * Neither the name of ClearCanvas Inc. nor the names of its contributors 
+-//      may be used to endorse or promote products derived from this software without 
+-//      specific prior written permission.
+-//
+-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+-// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+-// PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+-// OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+-// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+-// STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+-// OF SUCH DAMAGE.
+-
+-#endregion
+-
+-using System;
+-using ClearCanvas.Common;
+-using ClearCanvas.Common.Utilities;
+-using ClearCanvas.ImageServer.Common;
+-using ClearCanvas.ImageServer.Model;
+-
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
+-{
+-	/// <summary>
+-	/// Service thread for handling restore requests for <see cref="HsmArchive"/>s.
+-	/// </summary>
+-	public class HsmRestoreService : ThreadedService
+-	{
+-		private readonly HsmArchive _hsmArchive;
+-		private readonly ItemProcessingThreadPool<RestoreQueue> _threadPool;
+-
+-		/// <summary>
+-		/// Constructor.
+-		/// </summary>
+-		/// <param name="name">The name of the service.</param>
+-		/// <param name="hsmArchive">The <see cref="HsmArchive"/> for which to do restores. </param>
+-		public HsmRestoreService(string name, HsmArchive hsmArchive)
+-			: base(name)
+-		{
+-			_hsmArchive = hsmArchive;
+-
+-			_threadPool = new ItemProcessingThreadPool<RestoreQueue>(HsmSettings.Default.RestoreThreadCount);
+-			_threadPool.ThreadPoolName = "HsmRestore Pool";
+-		}
+-
+-		/// <summary>
+-		/// Initialize the service.
+-		/// </summary>
+-		protected override void Initialize()
+-		{
+-			_hsmArchive.ResetFailedRestoreQueueItems();
+-
+-			// Start the thread pool
+-			if (!_threadPool.Active)
+-				_threadPool.Start();
+-		}
+-
+-		/// <summary>
+-		/// Run the service.
+-		/// </summary>
+-		protected override void Run()
+-		{
+-
+-			while (true)
+-			{
+-				if ((_threadPool.QueueCount + _threadPool.ActiveCount) < _threadPool.Concurrency)
+-				{
+-					try
+-					{
+-						RestoreQueue queueItem = _hsmArchive.GetRestoreCandidate();
+-
+-						if (queueItem != null)
+-						{
+-							HsmStudyRestore archiver = new HsmStudyRestore(_hsmArchive);
+-							_threadPool.Enqueue(queueItem, archiver.Run);
+-						}
+-						else if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
+-						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _hsmArchive.PartitionArchive.Description);
+-							return;
+-						}
+-					}
+-					catch (Exception e)
+-					{
+-						Platform.Log(LogLevel.Error, e, "Unexpected exception when querying for restore candidates.  Rescheduling.");
+-						if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
+-						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _hsmArchive.PartitionArchive.Description);
+-							return;
+-						}
+-					}
+-				}
+-				else
+-				{
+-					if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
+-					{
+-						Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _hsmArchive.PartitionArchive.Description);
+-						return;
+-					}
+-				}
+-			}
+-		}
+-
+-		/// <summary>
+-		/// Stop the service thread.
+-		/// </summary>
+-		protected override void Stop()
+-		{
+-			_threadPool.Stop(true);
+-		}
+-	}
+-}
+Index: HsmSettings.Designer.cs
+===================================================================
+--- HsmSettings.Designer.cs	(revision 16135)
++++ HsmSettings.Designer.cs	(working copy)
+@@ -1,80 +0,0 @@
+-﻿//------------------------------------------------------------------------------
+-// <auto-generated>
+-//     This code was generated by a tool.
+-//     Runtime Version:2.0.50727.3074
+-//
+-//     Changes to this file may cause incorrect behavior and will be lost if
+-//     the code is regenerated.
+-// </auto-generated>
+-//------------------------------------------------------------------------------
+-
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm {
+-    
+-    
+-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "8.0.0.0")]
+-    internal sealed partial class HsmSettings : global::System.Configuration.ApplicationSettingsBase {
+-        
+-        private static HsmSettings defaultInstance = ((HsmSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new HsmSettings())));
+-        
+-        public static HsmSettings Default {
+-            get {
+-                return defaultInstance;
+-            }
+-        }
+-        
+-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+-        public int ArchiveThreadCount {
+-            get {
+-                return ((int)(this["ArchiveThreadCount"]));
+-            }
+-        }
+-        
+-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+-        public int RestoreThreadCount {
+-            get {
+-                return ((int)(this["RestoreThreadCount"]));
+-            }
+-        }
+-        
+-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+-        public int ReadFailRescheduleDelaySeconds {
+-            get {
+-                return ((int)(this["ReadFailRescheduleDelaySeconds"]));
+-            }
+-        }
+-        
+-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+-        public int MaxSimultaneousRestores {
+-            get {
+-                return ((int)(this["MaxSimultaneousRestores"]));
+-            }
+-        }
+-        
+-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+-        public bool CompressZipFiles {
+-            get {
+-                return ((bool)(this["CompressZipFiles"]));
+-            }
+-        }
+-        
+-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+-        [global::System.Configuration.DefaultSettingValueAttribute("15000")]
+-        public int PollDelayMilliseconds {
+-            get {
+-                return ((int)(this["PollDelayMilliseconds"]));
+-            }
+-        }
+-    }
+-}
+Index: HsmSettings.settings
+===================================================================
+--- HsmSettings.settings	(revision 16135)
++++ HsmSettings.settings	(working copy)
+@@ -1,24 +0,0 @@
+-﻿<?xml version='1.0' encoding='utf-8'?>
+-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ClearCanvas.ImageServer.Services.Archiving.Hsm" GeneratedClassName="HsmSettings">
+-  <Profiles />
+-  <Settings>
+-    <Setting Name="ArchiveThreadCount" Type="System.Int32" Scope="Application">
+-      <Value Profile="(Default)">1</Value>
+-    </Setting>
+-    <Setting Name="RestoreThreadCount" Type="System.Int32" Scope="Application">
+-      <Value Profile="(Default)">1</Value>
+-    </Setting>
+-    <Setting Name="ReadFailRescheduleDelaySeconds" Type="System.Int32" Scope="Application">
+-      <Value Profile="(Default)">10</Value>
+-    </Setting>
+-    <Setting Name="MaxSimultaneousRestores" Type="System.Int32" Scope="Application">
+-      <Value Profile="(Default)">20</Value>
+-    </Setting>
+-    <Setting Name="CompressZipFiles" Type="System.Boolean" Scope="Application">
+-      <Value Profile="(Default)">False</Value>
+-    </Setting>
+-    <Setting Name="PollDelayMilliseconds" Type="System.Int32" Scope="Application">
+-      <Value Profile="(Default)">15000</Value>
+-    </Setting>
+-  </Settings>
+-</SettingsFile>
+\ No newline at end of file
+Index: HsmStudyArchive.cs
+===================================================================
+--- HsmStudyArchive.cs	(revision 16135)
++++ HsmStudyArchive.cs	(working copy)
+@@ -1,312 +0,0 @@
+-﻿#region License
+-
+-// Copyright (c) 2009, ClearCanvas Inc.
+-// All rights reserved.
+-//
+-// Redistribution and use in source and binary forms, with or without modification, 
+-// are permitted provided that the following conditions are met:
+-//
+-//    * Redistributions of source code must retain the above copyright notice, 
+-//      this list of conditions and the following disclaimer.
+-//    * Redistributions in binary form must reproduce the above copyright notice, 
+-//      this list of conditions and the following disclaimer in the documentation 
+-//      and/or other materials provided with the distribution.
+-//    * Neither the name of ClearCanvas Inc. nor the names of its contributors 
+-//      may be used to endorse or promote products derived from this software without 
+-//      specific prior written permission.
+-//
+-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+-// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+-// PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+-// OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+-// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+-// STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+-// OF SUCH DAMAGE.
+-
+-#endregion
+-
+-using System;
+-using System.IO;
+-using System.Text;
+-using System.Xml;
+-using ClearCanvas.Common;
+-using ClearCanvas.Dicom;
+-using ClearCanvas.Dicom.Utilities.Xml;
+-using ClearCanvas.Enterprise.Core;
+-using ClearCanvas.ImageServer.Common;
+-using ClearCanvas.ImageServer.Common.CommandProcessor;
+-using ClearCanvas.ImageServer.Core.Validation;
+-using ClearCanvas.ImageServer.Model;
+-using ClearCanvas.ImageServer.Model.Brokers;
+-using ClearCanvas.ImageServer.Model.Parameters;
+-using ClearCanvas.ImageServer.Rules;
+-
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
+-{
+-    /// <summary>
+-	/// Support class for archiving a specific study with an <see cref="HsmArchive"/>.
+-	/// </summary>
+-	public class HsmStudyArchive
+-	{
+-	    /// <summary>
+-		/// Constructor.
+-		/// </summary>
+-		/// <param name="hsmArchive">The HsmArchive to work with.</param>
+-		public HsmStudyArchive(HsmArchive hsmArchive)
+-		{
+-			_hsmArchive = hsmArchive;
+-		}
+-		private StudyXml _studyXml;
+-		private StudyStorageLocation _storageLocation;
+-		private readonly HsmArchive _hsmArchive;
+-		private XmlDocument _archiveXml;
+-
+-		/// <summary>
+-		/// Retrieves the storage location fromthe database for the specified study.
+-		/// </summary>
+-		/// <param name="queueItem">The queueItem.</param>
+-		/// <returns>true if a location was found, false otherwise.</returns>
+-		public bool GetStudyStorageLocation(ArchiveQueue queueItem)
+-		{
+-			return FilesystemMonitor.Instance.GetReadableStudyStorageLocation(queueItem.StudyStorageKey, out _storageLocation);
+-		}
+-
+-		/// <summary>
+-		/// Load the StudyXml file.
+-		/// </summary>
+-		/// <param name="studyXmlFile"></param>
+-		public void LoadStudyXml(string studyXmlFile)
+-		{
+-			using (Stream fileStream = FileStreamOpener.OpenForRead(studyXmlFile, FileMode.Open))
+-			{
+-				XmlDocument theDoc = new XmlDocument();
+-
+-				StudyXmlIo.Read(theDoc, fileStream);
+-
+-				_studyXml = new StudyXml(_storageLocation.StudyInstanceUid);
+-				_studyXml.SetMemento(theDoc);
+-
+-				fileStream.Close();
+-			}
+-		}
+-
+-
+-		/// <summary>
+-		/// Archive the specified <see cref="ArchiveQueue"/> item.
+-		/// </summary>
+-		/// <param name="queueItem">The ArchiveQueue item to archive.</param>
+-		public void Run(ArchiveQueue queueItem)
+-		{
+-            using (ArchiveProcessorContext executionContext = new ArchiveProcessorContext(queueItem))
+-            {
+-                try
+-                {
+-                    if (!GetStudyStorageLocation(queueItem))
+-                    {
+-                        Platform.Log(LogLevel.Error,
+-                                     "Unable to find readable study storage location for archival queue request {0}.  Delaying request.",
+-                                     queueItem.Key);
+-                        queueItem.FailureDescription = "Unable to find readable study storage location for archival queue request.";
+-                        _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
+-                        return;
+-                    }
+-
+-                    // First, check to see if we can lock the study, if not just reschedule the queue entry.
+-                    if (!_storageLocation.QueueStudyStateEnum.Equals(QueueStudyStateEnum.Idle))
+-                    {
+-                        Platform.Log(LogLevel.Info, "Study {0} on partition {1} is currently locked, delaying archival.", _storageLocation.StudyInstanceUid, _hsmArchive.ServerPartition.Description);
+-                        queueItem.FailureDescription = "Study is currently locked, delaying archival.";
+-                        _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
+-                        return;
+-                    }
+-
+-                    StudyIntegrityValidator validator = new StudyIntegrityValidator();
+-                    validator.ValidateStudyState("Archive", _storageLocation, StudyIntegrityValidationModes.Default);
+-
+-                    using (IUpdateContext update = PersistentStoreRegistry.GetDefaultStore().OpenUpdateContext(UpdateContextSyncMode.Flush))
+-                    {
+-                        ILockStudy studyLock = update.GetBroker<ILockStudy>();
+-                        LockStudyParameters parms = new LockStudyParameters
+-                                                    	{
+-                                                    		StudyStorageKey = queueItem.StudyStorageKey,
+-                                                    		QueueStudyStateEnum = QueueStudyStateEnum.ArchiveScheduled
+-                                                    	};
+-                    	bool retVal = studyLock.Execute(parms);
+-                        if (!parms.Successful || !retVal)
+-                        {
+-                            Platform.Log(LogLevel.Info, "Study {0} on partition {1} failed to lock, delaying archival.", _storageLocation.StudyInstanceUid, _hsmArchive.ServerPartition.Description);
+-                            queueItem.FailureDescription = "Study failed to lock, delaying archival.";
+-                            _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
+-                            return;
+-                        }
+-                        update.Commit();
+-                    }
+-
+-                    string studyFolder = _storageLocation.GetStudyPath();
+-
+-                    string studyXmlFile = _storageLocation.GetStudyXmlPath(); 
+-                    
+-                    // Load the study Xml file, this is used to generate the list of dicom files to archive.
+-                    LoadStudyXml(studyXmlFile);
+-
+-                    DicomFile file = LoadFileFromStudyXml();
+-
+-                	string patientsName = file.DataSet[DicomTags.PatientsName].GetString(0, string.Empty);
+-					string patientId = file.DataSet[DicomTags.PatientId].GetString(0, string.Empty);
+-					string accessionNumber = file.DataSet[DicomTags.AccessionNumber].GetString(0, string.Empty);
+-
+-                	Platform.Log(LogLevel.Info,
+-                	             "Starting archival of study {0} for Patient {1} (PatientId:{2} A#:{3}) on Partition {4} on archive {5}",
+-                	             _storageLocation.StudyInstanceUid, patientsName, patientId,
+-                	             accessionNumber, _hsmArchive.ServerPartition.Description,
+-                	             _hsmArchive.PartitionArchive.Description);
+-
+-                    // Use the command processor to do the archival.
+-                    using (ServerCommandProcessor commandProcessor = new ServerCommandProcessor("Archive"))
+-                    {
+-                        _archiveXml = new XmlDocument();
+-
+-                        // Create the study date folder
+-                        string zipFilename = Path.Combine(_hsmArchive.HsmPath, _storageLocation.StudyFolder);
+-                        commandProcessor.AddCommand(new CreateDirectoryCommand(zipFilename));
+-
+-                        // Create a folder for the study
+-                        zipFilename = Path.Combine(zipFilename, _storageLocation.StudyInstanceUid);
+-                        commandProcessor.AddCommand(new CreateDirectoryCommand(zipFilename));
+-
+-                        // Save the archive data in the study folder, based on a filename with a date / time stamp
+-                        string filename = String.Format("{0}.zip", Platform.Time.ToString("yyyy-MM-dd-HHmm"));
+-                        zipFilename = Path.Combine(zipFilename, filename);
+-
+-
+-                        // Create the Xml data to store in the ArchiveStudyStorage table telling
+-                        // where the archived study is located.
+-                        XmlElement hsmArchiveElement = _archiveXml.CreateElement("HsmArchive");
+-                        _archiveXml.AppendChild(hsmArchiveElement);
+-                        XmlElement studyFolderElement = _archiveXml.CreateElement("StudyFolder");
+-                        hsmArchiveElement.AppendChild(studyFolderElement);
+-                        studyFolderElement.InnerText = _storageLocation.StudyFolder;
+-                        XmlElement filenameElement = _archiveXml.CreateElement("Filename");
+-                        hsmArchiveElement.AppendChild(filenameElement);
+-                        filenameElement.InnerText = filename;
+-                        XmlElement studyInstanceUidElement = _archiveXml.CreateElement("Uid");
+-                        hsmArchiveElement.AppendChild(studyInstanceUidElement);
+-                        studyInstanceUidElement.InnerText = _storageLocation.StudyInstanceUid;
+-
+-
+-                        // Create the Zip file
+-                    	commandProcessor.AddCommand(
+-                    		new CreateStudyZipCommand(zipFilename, _studyXml, studyFolder, executionContext.TempDirectory));
+-
+-                        // Update the database.
+-                        commandProcessor.AddCommand(new InsertArchiveStudyStorageCommand(queueItem.StudyStorageKey, queueItem.PartitionArchiveKey, queueItem.GetKey(), _storageLocation.ServerTransferSyntaxKey, _archiveXml));
+-
+-
+-                    	StudyRulesEngine studyEngine =
+-                    		new StudyRulesEngine(_storageLocation, _hsmArchive.ServerPartition, _studyXml);
+-                    	studyEngine.Apply(ServerRuleApplyTimeEnum.StudyArchived, commandProcessor);
+-						
+-
+-                        if (!commandProcessor.Execute())
+-                        {
+-                            Platform.Log(LogLevel.Error, "Unexpected failure archiving study: {0}", commandProcessor.FailureReason);
+-
+-                            queueItem.FailureDescription = commandProcessor.FailureReason;
+-                            _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
+-                        }
+-                        else
+-                            Platform.Log(LogLevel.Info, "Successfully archived study {0} on {1}", _storageLocation.StudyInstanceUid,
+-                                         _hsmArchive.PartitionArchive.Description);
+-
+-						// Log the current FilesystemQueue settings
+-						_storageLocation.LogFilesystemQueue();
+-                    }
+-                }
+-                catch (StudyIntegrityValidationFailure ex)
+-                {
+-                    StringBuilder error = new StringBuilder();
+-                    error.AppendLine(String.Format("Partition  : {0}", ex.ValidationStudyInfo.ServerAE));
+-                    error.AppendLine(String.Format("Patient    : {0}", ex.ValidationStudyInfo.PatientsName));
+-                    error.AppendLine(String.Format("Study Uid  : {0}", ex.ValidationStudyInfo.StudyInstaneUid));
+-                    error.AppendLine(String.Format("Accession# : {0}", ex.ValidationStudyInfo.AccessionNumber));
+-                    error.AppendLine(String.Format("Study Date : {0}", ex.ValidationStudyInfo.StudyDate));
+-
+-                    queueItem.FailureDescription = error.ToString();
+-                    _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
+-                }
+-                catch (Exception e)
+-                {
+-                    String msg = String.Format("Unexpected exception archiving study: {0} on {1}: {2}",
+-                                 _storageLocation.StudyInstanceUid, _hsmArchive.PartitionArchive.Description, e.Message);
+-
+-                    Platform.Log(LogLevel.Error, e, msg);
+-                    queueItem.FailureDescription = msg;
+-                    _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
+-                }
+-                finally
+-                {
+-                    // Unlock the Queue Entry
+-                    using (IUpdateContext update = PersistentStoreRegistry.GetDefaultStore().OpenUpdateContext(UpdateContextSyncMode.Flush))
+-                    {
+-                        ILockStudy studyLock = update.GetBroker<ILockStudy>();
+-                        LockStudyParameters parms = new LockStudyParameters
+-                                                    	{
+-                                                    		StudyStorageKey = queueItem.StudyStorageKey,
+-                                                    		QueueStudyStateEnum = QueueStudyStateEnum.Idle
+-                                                    	};
+-                    	bool retVal = studyLock.Execute(parms);
+-                        if (!parms.Successful || !retVal)
+-                        {
+-                            Platform.Log(LogLevel.Info, "Study {0} on partition {1} is failed to unlock.", _storageLocation.StudyInstanceUid, _hsmArchive.ServerPartition.Description);
+-                        }
+-                        update.Commit();
+-                    }
+-                }
+-            }			
+-		}
+-
+-		/// <summary>
+-		/// Simple class to load a sample image file from the study.
+-		/// </summary>
+-		/// <returns></returns>
+-		private DicomFile LoadFileFromStudyXml()
+-		{
+-			DicomFile defaultFile = null;
+-			foreach (SeriesXml seriesXml in _studyXml)
+-				foreach (InstanceXml instanceXml in seriesXml)
+-				{
+-					// Skip non-image objects
+-					string path;
+-					if (instanceXml.SopClass.Equals(SopClass.KeyObjectSelectionDocumentStorage)
+-					    || instanceXml.SopClass.Equals(SopClass.GrayscaleSoftcopyPresentationStateStorageSopClass)
+-					    || instanceXml.SopClass.Equals(SopClass.BlendingSoftcopyPresentationStateStorageSopClass)
+-					    || instanceXml.SopClass.Equals(SopClass.ColorSoftcopyPresentationStateStorageSopClass))
+-					{
+-						if (defaultFile == null)
+-						{
+-							path = Path.Combine(_storageLocation.GetStudyPath(), seriesXml.SeriesInstanceUid);
+-							path = Path.Combine(path, instanceXml.SopInstanceUid);
+-							path += ServerPlatform.DicomFileExtension;
+-							defaultFile = new DicomFile(path);
+-							defaultFile.Load(path);
+-						}
+-						continue;
+-					}
+-
+-					path = Path.Combine(_storageLocation.GetStudyPath(), seriesXml.SeriesInstanceUid);
+-					path = Path.Combine(path, instanceXml.SopInstanceUid);
+-					path += ServerPlatform.DicomFileExtension;
+-					defaultFile = new DicomFile(path);
+-					defaultFile.Load(path);
+-
+-					return defaultFile;
+-				}
+-
+-			return defaultFile;
+-		}
+-	}
+-}
+Index: HsmStudyRestore.cs
+===================================================================
+--- HsmStudyRestore.cs	(revision 16135)
++++ HsmStudyRestore.cs	(working copy)
+@@ -1,407 +0,0 @@
+-﻿#region License
+-
+-// Copyright (c) 2009, ClearCanvas Inc.
+-// All rights reserved.
+-//
+-// Redistribution and use in source and binary forms, with or without modification, 
+-// are permitted provided that the following conditions are met:
+-//
+-//    * Redistributions of source code must retain the above copyright notice, 
+-//      this list of conditions and the following disclaimer.
+-//    * Redistributions in binary form must reproduce the above copyright notice, 
+-//      this list of conditions and the following disclaimer in the documentation 
+-//      and/or other materials provided with the distribution.
+-//    * Neither the name of ClearCanvas Inc. nor the names of its contributors 
+-//      may be used to endorse or promote products derived from this software without 
+-//      specific prior written permission.
+-//
+-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+-// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+-// PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+-// OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
+-// GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+-// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+-// STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+-// OF SUCH DAMAGE.
+-
+-#endregion
+-
+-using System;
+-using System.Diagnostics;
+-using System.IO;
+-using System.Xml;
+-using ClearCanvas.Common;
+-using ClearCanvas.Dicom;
+-using ClearCanvas.Enterprise.Core;
+-using ClearCanvas.ImageServer.Common;
+-using ClearCanvas.ImageServer.Common.CommandProcessor;
+-using ClearCanvas.ImageServer.Core.Process;
+-using ClearCanvas.ImageServer.Core.Rebuild;
+-using ClearCanvas.ImageServer.Core.Validation;
+-using ClearCanvas.ImageServer.Model;
+-using ClearCanvas.ImageServer.Model.Brokers;
+-using ClearCanvas.ImageServer.Model.Parameters;
+-using ClearCanvas.ImageServer.Rules;
+-using Ionic.Zip;
+-
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
+-{
+-    /// <summary>
+-	/// Helper class for restoring a study from an <see cref="HsmArchive"/>
+-	/// </summary>
+-	public class HsmStudyRestore
+-	{
+-		#region Private Members
+-		private readonly HsmArchive _hsmArchive;
+-		private ArchiveStudyStorage _archiveStudyStorage;
+-		private StudyStorageLocation _location;
+-		private TransferSyntax _syntax;
+-		private ServerTransferSyntax _serverSyntax;
+-		private StudyStorage _studyStorage;
+-
+-        #endregion
+-
+-		#region Constructors
+-		/// <summary>
+-		/// Constructor.
+-		/// </summary>
+-		/// <param name="hsmArchive">The HsmArchive to work with.</param>
+-		public HsmStudyRestore(HsmArchive hsmArchive)
+-		{
+-			_hsmArchive = hsmArchive;
+-		}
+-		#endregion
+-
+-		/// <summary>
+-		/// Do the restore.
+-		/// </summary>
+-		/// <param name="queueItem">The queue item to restore.</param>
+-		public void Run(RestoreQueue queueItem)
+-		{
+-            using (RestoreProcessorContext context = new RestoreProcessorContext(queueItem))
+-            {
+-                try
+-                {
+-                    // Load up related classes.
+-                    using (IReadContext readContext = _hsmArchive.PersistentStore.OpenReadContext())
+-                    {
+-                        _archiveStudyStorage = ArchiveStudyStorage.Load(readContext, queueItem.ArchiveStudyStorageKey);
+-                        _serverSyntax = ServerTransferSyntax.Load(readContext, _archiveStudyStorage.ServerTransferSyntaxKey);
+-                        _syntax = TransferSyntax.GetTransferSyntax(_serverSyntax.Uid);
+-
+-                        StudyStorageLocationQueryParameters parms = new StudyStorageLocationQueryParameters
+-                                                                    	{StudyStorageKey = queueItem.StudyStorageKey};
+-                    	IQueryStudyStorageLocation broker = readContext.GetBroker<IQueryStudyStorageLocation>();
+-                        _location = broker.FindOne(parms);
+-                        if (_location == null)
+-                        {
+-                            _studyStorage = StudyStorage.Load(readContext, queueItem.StudyStorageKey);
+-							if (_studyStorage==null)
+-							{
+-								DateTime scheduleTime = Platform.Time.AddMinutes(5);
+-								Platform.Log(LogLevel.Error, "Unable to find storage location, rescheduling restore request to {0}",
+-											 scheduleTime);
+-								queueItem.FailureDescription = "Unable to find storage location, rescheduling request.";
+-								_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
+-								return;
+-							}
+-                        }
+-                    }
+-
+-					if (_location == null)
+-						Platform.Log(LogLevel.Info, "Starting restore of nearline study: {0}", _studyStorage.StudyInstanceUid);
+-					else
+-                        Platform.Log(LogLevel.Info, "Starting restore of online study: {0}", _location.StudyInstanceUid);
+-
+-                    // If restoring a Nearline study, select a filesystem
+-                    string destinationFolder;
+-                    if (_location == null)
+-                    {
+-                        ServerFilesystemInfo fs = _hsmArchive.Selector.SelectFilesystem();
+-                        if (fs == null)
+-                        {
+-                            DateTime scheduleTime = Platform.Time.AddMinutes(5);
+-                            Platform.Log(LogLevel.Error, "No writeable filesystem for restore, rescheduling restore request to {0}",
+-                                         scheduleTime);
+-                            queueItem.FailureDescription = "No writeable filesystem for restore, rescheduling request.";
+-                            _hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
+-                            return;
+-                        }
+-                        destinationFolder = Path.Combine(fs.Filesystem.FilesystemPath, _hsmArchive.ServerPartition.PartitionFolder);
+-                    }
+-                    else
+-                        destinationFolder = _location.GetStudyPath();
+-
+-
+-                    // Get the zip file path from the xml data in the ArchiveStudyStorage entry
+-                    // Also store the "StudyFolder" for use below
+-                    string studyFolder = String.Empty;
+-                    string filename = String.Empty;
+-                    string studyInstanceUid = String.Empty;
+-                    XmlElement element = _archiveStudyStorage.ArchiveXml.DocumentElement;
+-					if (element!=null)
+-						foreach (XmlElement node in element.ChildNodes)
+-							if (node.Name.Equals("StudyFolder"))
+-								studyFolder = node.InnerText;
+-							else if (node.Name.Equals("Filename"))
+-								filename = node.InnerText;
+-							else if (node.Name.Equals("Uid"))
+-								studyInstanceUid = node.InnerText;
+-
+-                    string zipFile = Path.Combine(_hsmArchive.HsmPath, studyFolder);
+-                    zipFile = Path.Combine(zipFile, studyInstanceUid);
+-                    zipFile = Path.Combine(zipFile, filename);
+-
+-
+-                    // Do a test read of the zip file.  If it succeeds, the file is available, if it 
+-                    // fails, we just set back to pending and recheck.
+-                    try
+-                    {
+-                        FileStream stream = File.OpenRead(zipFile);
+-                        // Read a byte, just in case that makes a difference.
+-                        stream.ReadByte();
+-                        stream.Close();
+-                        stream.Dispose();
+-                    }
+-                    catch (Exception ex)
+-                    {
+-                        DateTime scheduledTime = Platform.Time.AddSeconds(HsmSettings.Default.ReadFailRescheduleDelaySeconds);
+-                        Platform.Log(LogLevel.Error, ex, "Archive {0} for Study  {1} is unreadable, rescheduling restore to {2}",
+-                                     zipFile, _studyStorage == null ? (_location == null ? string.Empty : _location.StudyInstanceUid) : _studyStorage.StudyInstanceUid,
+-                                     scheduledTime);
+-                        // Just reschedule in "Restoring" state, the file is unreadable.
+-                        _hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Restoring,
+-                                                       scheduledTime);
+-                        return;
+-                    }
+-
+-                    if (_location == null)
+-                        RestoreNearlineStudy(queueItem, zipFile, destinationFolder, studyFolder);
+-                    else
+-                        RestoreOnlineStudy(queueItem, zipFile, destinationFolder);
+-                }
+-                catch (Exception e)
+-                {
+-                    Platform.Log(LogLevel.Error, e, "Unexpected exception processing restore request for {0} on archive {1}",
+-                        _studyStorage == null ? (_location == null ? string.Empty : _location.StudyInstanceUid) : _studyStorage.StudyInstanceUid,
+-                        _hsmArchive.PartitionArchive.Description);
+-                    queueItem.FailureDescription = e.Message;
+-                    _hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+-                }
+-            }
+-			
+-		}
+-
+-		public void RestoreNearlineStudy(RestoreQueue queueItem, string zipFile, string destinationFolder, string studyFolder)
+-		{
+-            ServerFilesystemInfo fs = _hsmArchive.Selector.SelectFilesystem();
+-			if (fs == null)
+-			{
+-				DateTime scheduleTime = Platform.Time.AddMinutes(5);
+-				Platform.Log(LogLevel.Error, "No writeable filesystem for restore, rescheduling restore request to {0}", scheduleTime);
+-				queueItem.FailureDescription = "No writeable filesystem for restore, rescheduling restore request";
+-				_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
+-				return;
+-			}
+-
+-		    StudyStorageLocation restoredLocation = null;
+-			try
+-			{
+-				using (ServerCommandProcessor processor = 
+-                    new ServerCommandProcessor("HSM Restore Offline Study"))
+-				{
+-					processor.AddCommand(new CreateDirectoryCommand(destinationFolder));
+-					destinationFolder = Path.Combine(destinationFolder, studyFolder);
+-					processor.AddCommand(new CreateDirectoryCommand(destinationFolder));
+-					destinationFolder = Path.Combine(destinationFolder, _studyStorage.StudyInstanceUid);
+-					processor.AddCommand(new CreateDirectoryCommand(destinationFolder));
+-					processor.AddCommand(new ExtractZipCommand(zipFile, destinationFolder));
+-
+-					// We rebuild the StudyXml, in case any settings or issues have happened since archival
+-					processor.AddCommand(new RebuildStudyXmlCommand(_studyStorage.StudyInstanceUid, destinationFolder));
+-
+-                    // Apply the rules engine.
+-					ServerActionContext context =
+-						new ServerActionContext(null, fs.Filesystem.GetKey(), _hsmArchive.ServerPartition,
+-						                        queueItem.StudyStorageKey) {CommandProcessor = processor};
+-					processor.AddCommand(
+-						new ApplyRulesCommand(destinationFolder, _studyStorage.StudyInstanceUid, context));
+-
+-					// Do the actual insert into the DB
+-					InsertFilesystemStudyStorageCommand insertStorageCommand = new InsertFilesystemStudyStorageCommand(
+-													_hsmArchive.PartitionArchive.ServerPartitionKey,
+-						                            _studyStorage.StudyInstanceUid,
+-						                            studyFolder,
+-						                            fs.Filesystem.GetKey(), _syntax);
+-					processor.AddCommand(insertStorageCommand);
+-
+-					if (!processor.Execute())
+-					{
+-						Platform.Log(LogLevel.Error, "Unexpected error processing restore request for {0} on archive {1}",
+-						             _studyStorage.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
+-						queueItem.FailureDescription = processor.FailureReason;
+-						_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+-					}
+-					else
+-					{
+-					    restoredLocation = insertStorageCommand.Location;
+-
+-						// Unlock the Queue Entry
+-						using (
+-							IUpdateContext update = PersistentStoreRegistry.GetDefaultStore().OpenUpdateContext(UpdateContextSyncMode.Flush))
+-						{
+-							bool retVal = _hsmArchive.UpdateRestoreQueue(update, queueItem, RestoreQueueStatusEnum.Completed, Platform.Time.AddSeconds(60));
+-							ILockStudy studyLock = update.GetBroker<ILockStudy>();
+-							LockStudyParameters parms = new LockStudyParameters
+-							                            	{
+-							                            		StudyStorageKey = queueItem.StudyStorageKey,
+-							                            		QueueStudyStateEnum = QueueStudyStateEnum.Idle
+-							                            	};
+-							retVal = retVal && studyLock.Execute(parms);
+-							if (!parms.Successful || !retVal)
+-							{
+-								string message =
+-									String.Format("Study {0} on partition {1} failed to unlock.", _studyStorage.StudyInstanceUid,
+-									              _hsmArchive.ServerPartition.Description);
+-								Platform.Log(LogLevel.Info, message);
+-								throw new ApplicationException(message);
+-							}
+-							update.Commit();
+-
+-							Platform.Log(LogLevel.Info, "Successfully restored study: {0} on archive {1}", _studyStorage.StudyInstanceUid,
+-										 _hsmArchive.PartitionArchive.Description);
+-
+-                            OnStudyRestored(restoredLocation);
+-						}
+-					}
+-				}
+-			}
+-            catch(StudyIntegrityValidationFailure ex)
+-            {
+-                Debug.Assert(restoredLocation != null);
+-                // study has been restored but it seems corrupted. Need to reprocess it.
+-                ReprocessStudy(restoredLocation, ex.Message);
+-            }
+-			catch (Exception e)
+-			{
+-				Platform.Log(LogLevel.Error, e, "Unexpected exception processing restore request for {0} on archive {1}",
+-							 _studyStorage.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
+-				_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+-			}
+-		}
+-
+-        private void ReprocessStudy(StudyStorageLocation restoredLocation, string reason)
+-        {
+-            StudyReprocessor reprocessor = new StudyReprocessor();
+-            String reprocessReason = String.Format("Restore Validation Error: {0}", reason);
+-            reprocessor.ReprocessStudy(reprocessReason, restoredLocation, Platform.Time);
+-            string message = string.Format("Study {0} has been restored but failed the validation. Reprocess Study has been triggerred. Reason for validation failure: {1}", restoredLocation.StudyInstanceUid, reason);
+-            Platform.Log(LogLevel.Warn, message);
+-
+-            ServerPlatform.Alert(AlertCategory.Application, AlertLevel.Informational, "Restore", 0, null, TimeSpan.Zero, message);
+-        }
+-
+-        private static void OnStudyRestored(StudyStorageLocation location)
+-        {
+-            ValidateStudy(location);
+-
+-            using(ServerCommandProcessor processor = new ServerCommandProcessor("Update Study Size In DB"))
+-            {
+-                processor.AddCommand(new UpdateStudySizeInDBCommand(location));
+-                if (!processor.Execute())
+-                {
+-                    Platform.Log(LogLevel.Error, "Unexpected error when trying to update the study size in DB:", processor.FailureReason);
+-                }
+-            }
+-        }
+-
+-        private static void ValidateStudy(StudyStorageLocation location)
+-        {
+-            StudyStorageValidator validator = new StudyStorageValidator();
+-            validator.Validate(location, ValidationLevels.Study | ValidationLevels.Series);
+-        }
+-
+-        private void RestoreOnlineStudy(RestoreQueue queueItem, string zipFile, string destinationFolder)
+-		{
+-			try
+-			{
+-				using (ServerCommandProcessor processor = new ServerCommandProcessor("HSM Restore Online Study"))
+-				{
+-					using (ZipFile zip = new ZipFile(zipFile))
+-					{
+-						foreach (string file in zip.EntryFileNames)
+-						{
+-							processor.AddCommand(new ExtractZipFileAndReplaceCommand(zipFile, file, destinationFolder));
+-						}
+-					}
+-
+-					// We rebuild the StudyXml, in case any settings or issues have happened since archival
+-					processor.AddCommand(new RebuildStudyXmlCommand(_location.StudyInstanceUid, destinationFolder));
+-
+-					StudyStatusEnum status;
+-
+-					if (_syntax.Encapsulated && _syntax.LosslessCompressed)
+-						status = StudyStatusEnum.OnlineLossless;
+-					else if (_syntax.Encapsulated && _syntax.LossyCompressed)
+-						status = StudyStatusEnum.OnlineLossy;
+-					else
+-						status = StudyStatusEnum.Online;
+-
+-					processor.AddCommand(new UpdateStudyStateCommand(_location, status, _serverSyntax));
+-
+-					// Apply the rules engine.
+-					ServerActionContext context =
+-						new ServerActionContext(null, _location.FilesystemKey, _hsmArchive.ServerPartition,
+-												queueItem.StudyStorageKey) {CommandProcessor = processor};
+-					processor.AddCommand(
+-						new ApplyRulesCommand(destinationFolder, _location.StudyInstanceUid, context));
+-
+-					if (!processor.Execute())
+-					{
+-						Platform.Log(LogLevel.Error, "Unexpected error processing restore request for {0} on archive {1}",
+-									 _location.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
+-						queueItem.FailureDescription = processor.FailureReason;
+-						_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+-					}
+-					else
+-					{
+-						// Unlock the Queue Entry and set to complete
+-						using (IUpdateContext update = PersistentStoreRegistry.GetDefaultStore().OpenUpdateContext(UpdateContextSyncMode.Flush))
+-						{
+-							_hsmArchive.UpdateRestoreQueue(update, queueItem, RestoreQueueStatusEnum.Completed, Platform.Time.AddSeconds(60));
+-							ILockStudy studyLock = update.GetBroker<ILockStudy>();
+-							LockStudyParameters parms = new LockStudyParameters
+-							                            	{
+-							                            		StudyStorageKey = queueItem.StudyStorageKey,
+-							                            		QueueStudyStateEnum = QueueStudyStateEnum.Idle
+-							                            	};
+-							bool retVal = studyLock.Execute(parms);
+-							if (!parms.Successful || !retVal)
+-							{
+-								Platform.Log(LogLevel.Info, "Study {0} on partition {1} failed to unlock.", _location.StudyInstanceUid,
+-											 _hsmArchive.ServerPartition.Description);
+-							}
+-
+-							update.Commit();
+-
+-							Platform.Log(LogLevel.Info, "Successfully restored study: {0} on archive {1}", _location.StudyInstanceUid,
+-										 _hsmArchive.PartitionArchive.Description);
+-
+-                            OnStudyRestored(_location);
+-						}
+-					}
+-				}
+-			}
+-			catch (Exception e)
+-			{
+-				Platform.Log(LogLevel.Error, e, "Unexpected exception processing restore request for {0} on archive {1}",
+-							 _location.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
+-				queueItem.FailureDescription = e.Message;
+-				_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+-			}
+-		}
+-	}
+-}
+Index: Martin.ImageServer.Services.Archiving.Nas.csproj
+===================================================================
+--- Martin.ImageServer.Services.Archiving.Nas.csproj	(revision 16135)
++++ Martin.ImageServer.Services.Archiving.Nas.csproj	(working copy)
+@@ -4,11 +4,11 @@
+     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+     <ProductVersion>9.0.30729</ProductVersion>
+     <SchemaVersion>2.0</SchemaVersion>
+-    <ProjectGuid>{BE27922C-C8D7-4190-8F24-5D7C1623CAFA}</ProjectGuid>
++    <ProjectGuid>{75766180-F0E6-4B44-8D36-997672204CFC}</ProjectGuid>
+     <OutputType>Library</OutputType>
+     <AppDesignerFolder>Properties</AppDesignerFolder>
+-    <RootNamespace>ClearCanvas.ImageServer.Services.Archiving.Hsm</RootNamespace>
+-    <AssemblyName>ClearCanvas.ImageServer.Services.Archiving.Hsm</AssemblyName>
++    <RootNamespace>Martin.ImageServer.Services.Archiving.Nas</RootNamespace>
++    <AssemblyName>Martin.ImageServer.Services.Archiving.Nas</AssemblyName>
+     <FileUpgradeFlags>
+     </FileUpgradeFlags>
+     <OldToolsVersion>2.0</OldToolsVersion>
+@@ -47,16 +47,17 @@
+     <Compile Include="CreateStudyZipCommand.cs" />
+     <Compile Include="ExtractZipCommand.cs" />
+     <Compile Include="ExtractZipFileAndReplaceCommand.cs" />
+-    <Compile Include="HsmArchive.cs" />
+-    <Compile Include="HsmArchiveService.cs" />
+-    <Compile Include="HsmRestoreService.cs" />
+-    <Compile Include="HsmSettings.Designer.cs">
++    <Compile Include="MoveArchiveQueueToActiveArchivePartition.cs" />
++    <Compile Include="NasArchive.cs" />
++    <Compile Include="NasArchiveService.cs" />
++    <Compile Include="NasRestoreService.cs" />
++    <Compile Include="NasSettings.Designer.cs">
+       <AutoGen>True</AutoGen>
+       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+-      <DependentUpon>HsmSettings.settings</DependentUpon>
++      <DependentUpon>NasSettings.settings</DependentUpon>
+     </Compile>
+-    <Compile Include="HsmStudyArchive.cs" />
+-    <Compile Include="HsmStudyRestore.cs" />
++    <Compile Include="NasStudyArchive.cs" />
++    <Compile Include="NasStudyRestore.cs" />
+     <Compile Include="Properties\AssemblyInfo.cs" />
+     <Compile Include="RestoreProcessorContext.cs" />
+     <Compile Include="StudyStorageValidator.cs" />
+@@ -107,9 +108,9 @@
+   </ItemGroup>
+   <ItemGroup>
+     <None Include="app.config" />
+-    <None Include="HsmSettings.settings">
++    <None Include="NasSettings.settings">
+       <Generator>SettingsSingleFileGenerator</Generator>
+-      <LastGenOutput>HsmSettings.Designer.cs</LastGenOutput>
++      <LastGenOutput>NasSettings.Designer.cs</LastGenOutput>
+     </None>
+   </ItemGroup>
+   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+Index: MoveArchiveQueueToActiveArchivePartition.cs
+===================================================================
+--- MoveArchiveQueueToActiveArchivePartition.cs	(revision 0)
++++ MoveArchiveQueueToActiveArchivePartition.cs	(revision 0)
+@@ -0,0 +1,66 @@
++﻿using System;
++using System.Collections.Generic;
++using System.Text;
++using ClearCanvas.Common;
++using ClearCanvas.Enterprise.Core;
++using ClearCanvas.ImageServer.Model.EntityBrokers;
++using ClearCanvas.ImageServer.Common;
++using ClearCanvas.ImageServer.Model;
++using ClearCanvas.ImageServer.Enterprise;
++
++namespace Martin.ImageServer.Services.Archiving.Nas
++{
++    [ExtensionOf(typeof(ApplicationRootExtensionPoint))]
++    class MoveArchiveQueueToActiveArchivePartition : IApplicationRoot
++    {
++        private readonly IPersistentStore _store = PersistentStoreRegistry.GetDefaultStore();
++
++        public IPersistentStore PersistentStore
++        {
++            get { return _store; }
++        }
++
++        public void RunApplication(string[] args)
++        {
++            using (IUpdateContext updateContext = PersistentStore.OpenUpdateContext(UpdateContextSyncMode.Flush))
++            {
++                IPartitionArchiveEntityBroker partitionBroker = updateContext.GetBroker<IPartitionArchiveEntityBroker>();
++                PartitionArchiveSelectCriteria partitionCriteria = new PartitionArchiveSelectCriteria();
++
++                partitionCriteria.Enabled.EqualTo(true);
++                partitionCriteria.ReadOnly.EqualTo(false);
++                PartitionArchive activePartition = partitionBroker.FindOne(partitionCriteria);
++                if (activePartition == null)
++                {
++                    Platform.Log(LogLevel.Error, "No active ArchivePartition were found.");
++                    return;
++                }
++
++                partitionCriteria.ReadOnly.EqualTo(true);
++                IList<ServerEntityKey> partitionKeys = new List<ServerEntityKey>();
++                foreach (PartitionArchive partition in partitionBroker.Find(partitionCriteria))
++                {
++                    partitionKeys.Add(partition.Key);
++                }
++
++                IArchiveQueueEntityBroker queueBroker = updateContext.GetBroker<IArchiveQueueEntityBroker>();
++                ArchiveQueueSelectCriteria queueCriteria = new ArchiveQueueSelectCriteria();
++                queueCriteria.ArchiveQueueStatusEnum.In(new ArchiveQueueStatusEnum[] { ArchiveQueueStatusEnum.Failed, ArchiveQueueStatusEnum.Pending });
++                queueCriteria.PartitionArchiveKey.In(partitionKeys);
++
++                ArchiveQueueUpdateColumns queueColumns = new ArchiveQueueUpdateColumns()
++                {
++                    PartitionArchiveKey = activePartition.Key,
++                    ArchiveQueueStatusEnum = ArchiveQueueStatusEnum.Pending,
++                    ProcessorId = "",
++                    ScheduledTime = Platform.Time
++                };
++
++                if (queueBroker.Update(queueCriteria, queueColumns))
++                {
++                    updateContext.Commit();
++                }
++            }
++        }
++    }
++}
+Index: NasArchive.cs
+===================================================================
+--- NasArchive.cs	(revision 16135)
++++ NasArchive.cs	(working copy)
+@@ -29,7 +29,9 @@
+ 
+ #endregion
+ 
++using System;
+ using System.Xml;
++using System.Runtime.InteropServices;
+ using ClearCanvas.Common;
+ using ClearCanvas.Enterprise.Core;
+ using ClearCanvas.ImageServer.Common;
+@@ -37,21 +39,22 @@
+ using ClearCanvas.ImageServer.Model.Brokers;
+ using ClearCanvas.ImageServer.Model.EntityBrokers;
+ using ClearCanvas.ImageServer.Model.Parameters;
++using ClearCanvas.ImageServer.Services.Archiving;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	/// <summary>
+-	/// HSM Based archive plugin.
++	/// NAS Based archive plugin.
+ 	/// </summary>
+ 	/// <remarks>
+ 	/// <para>
+-	/// The <see cref="HsmArchive"/> class is a plugin to implement an 
+-	/// Hierarchical Storage Management archive.  Among the HSM style interfaces 
++	/// The <see cref="NasArchive"/> class is a plugin to implement an 
++	/// Hierarchical Storage Management archive.  Among the NAS style interfaces 
+ 	/// to automated tape libraries are the Sun/StorageTek QFS/SAMFS and Legato DiskXtender.  
+ 	/// </para>
+ 	/// <para>
+-	/// The <see cref="HsmArchive"/> class takes as input an accessable directory where
+-	/// the filesystem for the HSM has been mounted.  When storing studies to the HSM
++	/// The <see cref="NasArchive"/> class takes as input an accessable directory where
++	/// the filesystem for the NAS has been mounted.  When storing studies to the NAS
+ 	/// filesystem, a hierarchical folder structure is created.  At the root, a folder
+ 	/// typically based on Study Date is created.  Next, a folder named after Study Instance
+ 	/// UID of the study being archived is created.  Finally, the ZIP file for the study
+@@ -59,47 +62,79 @@
+ 	/// </para>
+ 	/// <para>
+ 	/// The zip file created is not in a compressed format.  It assumes the images themselves
+-	/// are compressed, or the HSM filesystem / underlying tape drives are doing the compression.
++	/// are compressed, or the NAS filesystem / underlying tape drives are doing the compression.
+ 	/// </para>
+ 	/// <para>
+-	/// When a restore of a study occurs, the HsmArchive will do an initial read of the zip 
++	/// When a restore of a study occurs, the NasArchive will do an initial read of the zip 
+ 	/// file.  If the read fails, it will reschedule the read after a configurable time delay,
+-	/// allowing the HSM system to read the zip file off disk and restore it.
++	/// allowing the NAS system to read the zip file off disk and restore it.
+ 	/// </para>
+ 	/// <para>
+-	/// The HsmArchive class is basically a shell for the archive.  A configurable number of threads
++	/// The NasArchive class is basically a shell for the archive.  A configurable number of threads
+ 	/// are created to handle the actual archiving and restoring of data.
+ 	/// </para>
+ 	/// </remarks>
+ 	[ExtensionOf(typeof(ImageServerArchiveExtensionPoint))]
+-	public class HsmArchive : ImageServerArchiveBase
++	public class NasArchive : ImageServerArchiveBase
+ 	{
+-		private HsmArchiveService _archiveService;
+-		private HsmRestoreService _restoreService;
++		private NasArchiveService _archiveService;
++		private NasRestoreService _restoreService;
+ 		
+-		private string _hsmPath;
++		private string _nasPath;
+ 
+-		public string HsmPath
++		public string NasPath
+ 		{
+-			get { return _hsmPath; }
++			get { return _nasPath; }
+ 		}
++		
++		public long MinimumAvailableSpace { get; private set; }
+ 
+ 		/// <summary>
+-		/// The <see cref="PartitionArchive"/> associated with the HsmArchive.
++		/// The <see cref="PartitionArchive"/> associated with the NasArchive.
+ 		/// </summary>
+ 		public PartitionArchive PartitionArchive
+ 		{
+ 			get { return _partitionArchive; }
+ 		}
+ 
++		private static readonly ArchiveTypeEnum nasArchiveTypeEnum = ArchiveTypeEnum.GetEnum("NasArchive");
++		
+ 		/// <summary>
+ 		/// The Archive Type.
+ 		/// </summary>
+ 		public override ArchiveTypeEnum ArchiveType
+ 		{
+-			get { return ArchiveTypeEnum.HsmArchive; }
+-		}
++			get { return nasArchiveTypeEnum; }
++		}		
++		
++        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
++        internal static extern bool GetDiskFreeSpaceEx(string drive, out long freeBytesForUser, out long totalBytes, out long freeBytes);
+ 
++        bool issueFreeSpaceAlertOnce = true;
++
++        public bool CheckStudyDiskSpace()
++        {
++            long freeBytesForUser = -1, totalBytes, freeBytes;
++            GetDiskFreeSpaceEx(_nasPath, out freeBytesForUser, out totalBytes, out freeBytes);
++            if (freeBytesForUser > MinimumAvailableSpace)
++            {
++                issueFreeSpaceAlertOnce = true;
++                return true;
++            }
++
++            string message = string.Format("Not enough free disk space on '{0}'.", NasPath);
++            Platform.Log(LogLevel.Error, message);
++
++            if (issueFreeSpaceAlertOnce)
++            {
++                ServerPlatform.Alert(AlertCategory.Application, AlertLevel.Critical, ArchiveType.ToString(),
++                    AlertTypeCodes.NoResources, null, TimeSpan.Zero, message);
++                issueFreeSpaceAlertOnce = false;
++            }
++            
++            return false;
++        }
++
+ 		public override RestoreQueue GetRestoreCandidate()
+ 		{
+ 			RestoreQueue queueItem;
+@@ -129,7 +164,7 @@
+ 					criteria.RestoreQueueStatusEnum.EqualTo(RestoreQueueStatusEnum.Restoring);
+ 					IRestoreQueueEntityBroker restoreQueueBroker = updateContext.GetBroker<IRestoreQueueEntityBroker>();
+ 
+-					if (restoreQueueBroker.Count(criteria) > HsmSettings.Default.MaxSimultaneousRestores)
++					if (restoreQueueBroker.Count(criteria) > NasSettings.Default.MaxSimultaneousRestores)
+ 						return null;
+ 
+ 					QueryRestoreQueueParameters parms = new QueryRestoreQueueParameters();
+@@ -159,22 +194,27 @@
+ 
+ 			LoadServerPartition();
+ 		
+-			_hsmPath = string.Empty;
++			_nasPath = string.Empty;
+ 
+-			//Hsm Archive specific Xml data.
++			//Nas Archive specific Xml data.
+ 			XmlElement element = archive.ConfigurationXml.DocumentElement;
+ 			foreach (XmlElement node in element.ChildNodes)
+-				if (node.Name.Equals("RootDir"))
+-					_hsmPath = node.InnerText;
++			{
++                switch (node.Name)
++                {
++                    case "RootDir": _nasPath = node.InnerText; break;
++                    case "MinimumAvailableSpace": MinimumAvailableSpace = long.Parse(node.InnerText); break;
++                 }
++            }
+ 			
+ 			// Start the restore service
+-			_restoreService = new HsmRestoreService("HSM Restore", this);
++			_restoreService = new NasRestoreService("NAS Restore", this);
+ 			_restoreService.StartService();
+ 
+ 			// If not "readonly", start the archive service.
+ 			if (!_partitionArchive.ReadOnly)
+ 			{
+-				_archiveService = new HsmArchiveService("HSM Archive", this);	
++				_archiveService = new NasArchiveService("NAS Archive", this);	
+ 				_archiveService.StartService();
+ 			}			
+ 		}
+Index: NasArchiveExtension.cs
+===================================================================
+--- NasArchiveExtension.cs	(revision 16135)
++++ NasArchiveExtension.cs	(working copy)
+@@ -33,16 +33,16 @@
+ using ClearCanvas.Common;
+ using ClearCanvas.ImageServer.Model;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	[ExtensionOf(typeof(ImageServerArchiveExtensionPoint))]
+-	public class HsmArchiveExtension : ImageServerArchiveBase
++	public class NasArchiveExtension : ImageServerArchiveBase
+ 	{
+ 		private PartitionArchive _partitionArchive;
+ 
+ 		public override ArchiveTypeEnum ArchiveType
+ 		{
+-			get { return ArchiveTypeEnum.HsmArchive; }
++			get { return ArchiveTypeEnum.NasArchive; }
+ 		}
+ 
+ 		public override void Start(PartitionArchive archive)
+Index: NasArchiveService.cs
+===================================================================
+--- NasArchiveService.cs	(revision 16135)
++++ NasArchiveService.cs	(working copy)
+@@ -35,26 +35,26 @@
+ using ClearCanvas.ImageServer.Common;
+ using ClearCanvas.ImageServer.Model;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	/// <summary>
+ 	/// Service thread for handling archivals.
+ 	/// </summary>
+-	public class HsmArchiveService : ThreadedService
++	public class NasArchiveService : ThreadedService
+ 	{
+-		private readonly HsmArchive _hsmArchive;
++		private readonly NasArchive _nasArchive;
+ 		private readonly ItemProcessingThreadPool<ArchiveQueue> _threadPool;
+ 
+-		public HsmArchiveService(string name, HsmArchive hsmArchive) : base(name)
++		public NasArchiveService(string name, NasArchive nasArchive) : base(name)
+ 		{
+-			_hsmArchive = hsmArchive;
+-			_threadPool = new ItemProcessingThreadPool<ArchiveQueue>(HsmSettings.Default.ArchiveThreadCount);
+-			_threadPool.ThreadPoolName = "HsmArchive Pool";
++			_nasArchive = nasArchive;
++			_threadPool = new ItemProcessingThreadPool<ArchiveQueue>(NasSettings.Default.ArchiveThreadCount);
++			_threadPool.ThreadPoolName = "NasArchive Pool";
+ 		}
+ 
+ 		protected override void Initialize()
+ 		{
+-			_hsmArchive.ResetFailedArchiveQueueItems();
++			_nasArchive.ResetFailedArchiveQueueItems();
+ 
+ 			// Start the thread pool
+ 			if (!_threadPool.Active)
+@@ -72,34 +72,34 @@
+ 				{
+ 					try
+ 					{
+-						ArchiveQueue queueItem = _hsmArchive.GetArchiveCandidate();
++						ArchiveQueue queueItem = _nasArchive.GetArchiveCandidate();
+ 
+ 						if (queueItem != null)
+ 						{
+-							HsmStudyArchive archiver = new HsmStudyArchive(_hsmArchive);
++							NasStudyArchive archiver = new NasStudyArchive(_nasArchive);
+ 							_threadPool.Enqueue(queueItem, archiver.Run);
+ 						}
+-						else if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
++						else if (CheckStop(NasSettings.Default.PollDelayMilliseconds))
+ 						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _hsmArchive.PartitionArchive.Description);
++							Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _nasArchive.PartitionArchive.Description);
+ 							return;
+ 						}
+ 					}
+ 					catch (Exception e)
+ 					{
+ 						Platform.Log(LogLevel.Error,e,"Unexpected exception when querying for archive candidates, rescheduling.");
+-						if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
++						if (CheckStop(NasSettings.Default.PollDelayMilliseconds))
+ 						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _hsmArchive.PartitionArchive.Description);
++							Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _nasArchive.PartitionArchive.Description);
+ 							return;
+ 						}
+ 					}
+ 				}
+ 				else
+ 				{
+-					if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
++					if (CheckStop(NasSettings.Default.PollDelayMilliseconds))
+ 					{
+-						Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _hsmArchive.PartitionArchive.Description);
++						Platform.Log(LogLevel.Info, "Shutting down {0} archiving service.", _nasArchive.PartitionArchive.Description);
+ 						return;
+ 					}
+ 				}
+Index: NasRestoreService.cs
+===================================================================
+--- NasRestoreService.cs	(revision 16135)
++++ NasRestoreService.cs	(working copy)
+@@ -35,28 +35,28 @@
+ using ClearCanvas.ImageServer.Common;
+ using ClearCanvas.ImageServer.Model;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	/// <summary>
+-	/// Service thread for handling restore requests for <see cref="HsmArchive"/>s.
++	/// Service thread for handling restore requests for <see cref="NasArchive"/>s.
+ 	/// </summary>
+-	public class HsmRestoreService : ThreadedService
++	public class NasRestoreService : ThreadedService
+ 	{
+-		private readonly HsmArchive _hsmArchive;
++		private readonly NasArchive _nasArchive;
+ 		private readonly ItemProcessingThreadPool<RestoreQueue> _threadPool;
+ 
+ 		/// <summary>
+ 		/// Constructor.
+ 		/// </summary>
+ 		/// <param name="name">The name of the service.</param>
+-		/// <param name="hsmArchive">The <see cref="HsmArchive"/> for which to do restores. </param>
+-		public HsmRestoreService(string name, HsmArchive hsmArchive)
++		/// <param name="nasArchive">The <see cref="NasArchive"/> for which to do restores. </param>
++		public NasRestoreService(string name, NasArchive nasArchive)
+ 			: base(name)
+ 		{
+-			_hsmArchive = hsmArchive;
++			_nasArchive = nasArchive;
+ 
+-			_threadPool = new ItemProcessingThreadPool<RestoreQueue>(HsmSettings.Default.RestoreThreadCount);
+-			_threadPool.ThreadPoolName = "HsmRestore Pool";
++			_threadPool = new ItemProcessingThreadPool<RestoreQueue>(NasSettings.Default.RestoreThreadCount);
++			_threadPool.ThreadPoolName = "NasRestore Pool";
+ 		}
+ 
+ 		/// <summary>
+@@ -64,7 +64,7 @@
+ 		/// </summary>
+ 		protected override void Initialize()
+ 		{
+-			_hsmArchive.ResetFailedRestoreQueueItems();
++			_nasArchive.ResetFailedRestoreQueueItems();
+ 
+ 			// Start the thread pool
+ 			if (!_threadPool.Active)
+@@ -83,34 +83,34 @@
+ 				{
+ 					try
+ 					{
+-						RestoreQueue queueItem = _hsmArchive.GetRestoreCandidate();
++						RestoreQueue queueItem = _nasArchive.GetRestoreCandidate();
+ 
+ 						if (queueItem != null)
+ 						{
+-							HsmStudyRestore archiver = new HsmStudyRestore(_hsmArchive);
++							NasStudyRestore archiver = new NasStudyRestore(_nasArchive);
+ 							_threadPool.Enqueue(queueItem, archiver.Run);
+ 						}
+-						else if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
++						else if (CheckStop(NasSettings.Default.PollDelayMilliseconds))
+ 						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _hsmArchive.PartitionArchive.Description);
++							Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _nasArchive.PartitionArchive.Description);
+ 							return;
+ 						}
+ 					}
+ 					catch (Exception e)
+ 					{
+ 						Platform.Log(LogLevel.Error, e, "Unexpected exception when querying for restore candidates.  Rescheduling.");
+-						if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
++						if (CheckStop(NasSettings.Default.PollDelayMilliseconds))
+ 						{
+-							Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _hsmArchive.PartitionArchive.Description);
++							Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _nasArchive.PartitionArchive.Description);
+ 							return;
+ 						}
+ 					}
+ 				}
+ 				else
+ 				{
+-					if (CheckStop(HsmSettings.Default.PollDelayMilliseconds))
++					if (CheckStop(NasSettings.Default.PollDelayMilliseconds))
+ 					{
+-						Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _hsmArchive.PartitionArchive.Description);
++						Platform.Log(LogLevel.Info, "Shutting down {0} restore service.", _nasArchive.PartitionArchive.Description);
+ 						return;
+ 					}
+ 				}
+Index: NasSettings.Designer.cs
+===================================================================
+--- NasSettings.Designer.cs	(revision 16135)
++++ NasSettings.Designer.cs	(working copy)
+@@ -8,16 +8,16 @@
+ // </auto-generated>
+ //------------------------------------------------------------------------------
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm {
++namespace Martin.ImageServer.Services.Archiving.Nas {
+     
+     
+     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "8.0.0.0")]
+-    internal sealed partial class HsmSettings : global::System.Configuration.ApplicationSettingsBase {
++    internal sealed partial class NasSettings : global::System.Configuration.ApplicationSettingsBase {
+         
+-        private static HsmSettings defaultInstance = ((HsmSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new HsmSettings())));
++        private static NasSettings defaultInstance = ((NasSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new NasSettings())));
+         
+-        public static HsmSettings Default {
++        public static NasSettings Default {
+             get {
+                 return defaultInstance;
+             }
+Index: NasSettings.settings
+===================================================================
+--- NasSettings.settings	(revision 16135)
++++ NasSettings.settings	(working copy)
+@@ -1,5 +1,5 @@
+ ﻿<?xml version='1.0' encoding='utf-8'?>
+-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ClearCanvas.ImageServer.Services.Archiving.Hsm" GeneratedClassName="HsmSettings">
++<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Martin.ImageServer.Services.Archiving.Nas" GeneratedClassName="NasSettings">
+   <Profiles />
+   <Settings>
+     <Setting Name="ArchiveThreadCount" Type="System.Int32" Scope="Application">
+Index: NasStudyArchive.cs
+===================================================================
+--- NasStudyArchive.cs	(revision 16135)
++++ NasStudyArchive.cs	(working copy)
+@@ -44,25 +44,26 @@
+ using ClearCanvas.ImageServer.Model.Brokers;
+ using ClearCanvas.ImageServer.Model.Parameters;
+ using ClearCanvas.ImageServer.Rules;
++using ClearCanvas.ImageServer.Services.Archiving;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+     /// <summary>
+-	/// Support class for archiving a specific study with an <see cref="HsmArchive"/>.
++	/// Support class for archiving a specific study with an <see cref="NasArchive"/>.
+ 	/// </summary>
+-	public class HsmStudyArchive
++	public class NasStudyArchive
+ 	{
+ 	    /// <summary>
+ 		/// Constructor.
+ 		/// </summary>
+-		/// <param name="hsmArchive">The HsmArchive to work with.</param>
+-		public HsmStudyArchive(HsmArchive hsmArchive)
++		/// <param name="nasArchive">The NasArchive to work with.</param>
++		public NasStudyArchive(NasArchive nasArchive)
+ 		{
+-			_hsmArchive = hsmArchive;
++			_nasArchive = nasArchive;
+ 		}
+ 		private StudyXml _studyXml;
+ 		private StudyStorageLocation _storageLocation;
+-		private readonly HsmArchive _hsmArchive;
++		private readonly NasArchive _nasArchive;
+ 		private XmlDocument _archiveXml;
+ 
+ 		/// <summary>
+@@ -105,22 +106,29 @@
+             {
+                 try
+                 {
++				    if (!_nasArchive.CheckStudyDiskSpace())
++                    {
++                        queueItem.FailureDescription = "Not enough free disk space.";
++                        _nasArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(60));
++                        return;
++                    }                    
++					
+                     if (!GetStudyStorageLocation(queueItem))
+                     {
+                         Platform.Log(LogLevel.Error,
+                                      "Unable to find readable study storage location for archival queue request {0}.  Delaying request.",
+                                      queueItem.Key);
+                         queueItem.FailureDescription = "Unable to find readable study storage location for archival queue request.";
+-                        _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
++                        _nasArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
+                         return;
+                     }
+ 
+                     // First, check to see if we can lock the study, if not just reschedule the queue entry.
+                     if (!_storageLocation.QueueStudyStateEnum.Equals(QueueStudyStateEnum.Idle))
+                     {
+-                        Platform.Log(LogLevel.Info, "Study {0} on partition {1} is currently locked, delaying archival.", _storageLocation.StudyInstanceUid, _hsmArchive.ServerPartition.Description);
++                        Platform.Log(LogLevel.Info, "Study {0} on partition {1} is currently locked, delaying archival.", _storageLocation.StudyInstanceUid, _nasArchive.ServerPartition.Description);
+                         queueItem.FailureDescription = "Study is currently locked, delaying archival.";
+-                        _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
++                        _nasArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
+                         return;
+                     }
+ 
+@@ -138,9 +146,9 @@
+                     	bool retVal = studyLock.Execute(parms);
+                         if (!parms.Successful || !retVal)
+                         {
+-                            Platform.Log(LogLevel.Info, "Study {0} on partition {1} failed to lock, delaying archival.", _storageLocation.StudyInstanceUid, _hsmArchive.ServerPartition.Description);
++                            Platform.Log(LogLevel.Info, "Study {0} on partition {1} failed to lock, delaying archival.", _storageLocation.StudyInstanceUid, _nasArchive.ServerPartition.Description);
+                             queueItem.FailureDescription = "Study failed to lock, delaying archival.";
+-                            _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
++                            _nasArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Pending, Platform.Time.AddMinutes(2));
+                             return;
+                         }
+                         update.Commit();
+@@ -162,8 +170,8 @@
+                 	Platform.Log(LogLevel.Info,
+                 	             "Starting archival of study {0} for Patient {1} (PatientId:{2} A#:{3}) on Partition {4} on archive {5}",
+                 	             _storageLocation.StudyInstanceUid, patientsName, patientId,
+-                	             accessionNumber, _hsmArchive.ServerPartition.Description,
+-                	             _hsmArchive.PartitionArchive.Description);
++                	             accessionNumber, _nasArchive.ServerPartition.Description,
++                	             _nasArchive.PartitionArchive.Description);
+ 
+                     // Use the command processor to do the archival.
+                     using (ServerCommandProcessor commandProcessor = new ServerCommandProcessor("Archive"))
+@@ -171,7 +179,7 @@
+                         _archiveXml = new XmlDocument();
+ 
+                         // Create the study date folder
+-                        string zipFilename = Path.Combine(_hsmArchive.HsmPath, _storageLocation.StudyFolder);
++                        string zipFilename = Path.Combine(_nasArchive.NasPath, _storageLocation.StudyFolder);
+                         commandProcessor.AddCommand(new CreateDirectoryCommand(zipFilename));
+ 
+                         // Create a folder for the study
+@@ -185,16 +193,16 @@
+ 
+                         // Create the Xml data to store in the ArchiveStudyStorage table telling
+                         // where the archived study is located.
+-                        XmlElement hsmArchiveElement = _archiveXml.CreateElement("HsmArchive");
+-                        _archiveXml.AppendChild(hsmArchiveElement);
++                        XmlElement nasArchiveElement = _archiveXml.CreateElement("NasArchive");
++                        _archiveXml.AppendChild(nasArchiveElement);
+                         XmlElement studyFolderElement = _archiveXml.CreateElement("StudyFolder");
+-                        hsmArchiveElement.AppendChild(studyFolderElement);
++                        nasArchiveElement.AppendChild(studyFolderElement);
+                         studyFolderElement.InnerText = _storageLocation.StudyFolder;
+                         XmlElement filenameElement = _archiveXml.CreateElement("Filename");
+-                        hsmArchiveElement.AppendChild(filenameElement);
++                        nasArchiveElement.AppendChild(filenameElement);
+                         filenameElement.InnerText = filename;
+                         XmlElement studyInstanceUidElement = _archiveXml.CreateElement("Uid");
+-                        hsmArchiveElement.AppendChild(studyInstanceUidElement);
++                        nasArchiveElement.AppendChild(studyInstanceUidElement);
+                         studyInstanceUidElement.InnerText = _storageLocation.StudyInstanceUid;
+ 
+ 
+@@ -207,7 +215,7 @@
+ 
+ 
+                     	StudyRulesEngine studyEngine =
+-                    		new StudyRulesEngine(_storageLocation, _hsmArchive.ServerPartition, _studyXml);
++                    		new StudyRulesEngine(_storageLocation, _nasArchive.ServerPartition, _studyXml);
+                     	studyEngine.Apply(ServerRuleApplyTimeEnum.StudyArchived, commandProcessor);
+ 						
+ 
+@@ -216,11 +224,11 @@
+                             Platform.Log(LogLevel.Error, "Unexpected failure archiving study: {0}", commandProcessor.FailureReason);
+ 
+                             queueItem.FailureDescription = commandProcessor.FailureReason;
+-                            _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
++                            _nasArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
+                         }
+                         else
+                             Platform.Log(LogLevel.Info, "Successfully archived study {0} on {1}", _storageLocation.StudyInstanceUid,
+-                                         _hsmArchive.PartitionArchive.Description);
++                                         _nasArchive.PartitionArchive.Description);
+ 
+ 						// Log the current FilesystemQueue settings
+ 						_storageLocation.LogFilesystemQueue();
+@@ -236,16 +244,16 @@
+                     error.AppendLine(String.Format("Study Date : {0}", ex.ValidationStudyInfo.StudyDate));
+ 
+                     queueItem.FailureDescription = error.ToString();
+-                    _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
++                    _nasArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
+                 }
+                 catch (Exception e)
+                 {
+                     String msg = String.Format("Unexpected exception archiving study: {0} on {1}: {2}",
+-                                 _storageLocation.StudyInstanceUid, _hsmArchive.PartitionArchive.Description, e.Message);
++                                 _storageLocation.StudyInstanceUid, _nasArchive.PartitionArchive.Description, e.Message);
+ 
+                     Platform.Log(LogLevel.Error, e, msg);
+                     queueItem.FailureDescription = msg;
+-                    _hsmArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
++                    _nasArchive.UpdateArchiveQueue(queueItem, ArchiveQueueStatusEnum.Failed, Platform.Time);
+                 }
+                 finally
+                 {
+@@ -261,7 +269,7 @@
+                     	bool retVal = studyLock.Execute(parms);
+                         if (!parms.Successful || !retVal)
+                         {
+-                            Platform.Log(LogLevel.Info, "Study {0} on partition {1} is failed to unlock.", _storageLocation.StudyInstanceUid, _hsmArchive.ServerPartition.Description);
++                            Platform.Log(LogLevel.Info, "Study {0} on partition {1} is failed to unlock.", _storageLocation.StudyInstanceUid, _nasArchive.ServerPartition.Description);
+                         }
+                         update.Commit();
+                     }
+Index: NasStudyRestore.cs
+===================================================================
+--- NasStudyRestore.cs	(revision 16135)
++++ NasStudyRestore.cs	(working copy)
+@@ -46,16 +46,17 @@
+ using ClearCanvas.ImageServer.Model.Parameters;
+ using ClearCanvas.ImageServer.Rules;
+ using Ionic.Zip;
++using ClearCanvas.ImageServer.Services.Archiving;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+     /// <summary>
+-	/// Helper class for restoring a study from an <see cref="HsmArchive"/>
++	/// Helper class for restoring a study from an <see cref="NasArchive"/>
+ 	/// </summary>
+-	public class HsmStudyRestore
++	public class NasStudyRestore
+ 	{
+ 		#region Private Members
+-		private readonly HsmArchive _hsmArchive;
++		private readonly NasArchive _nasArchive;
+ 		private ArchiveStudyStorage _archiveStudyStorage;
+ 		private StudyStorageLocation _location;
+ 		private TransferSyntax _syntax;
+@@ -68,10 +69,10 @@
+ 		/// <summary>
+ 		/// Constructor.
+ 		/// </summary>
+-		/// <param name="hsmArchive">The HsmArchive to work with.</param>
+-		public HsmStudyRestore(HsmArchive hsmArchive)
++		/// <param name="nasArchive">The NasArchive to work with.</param>
++		public NasStudyRestore(NasArchive nasArchive)
+ 		{
+-			_hsmArchive = hsmArchive;
++			_nasArchive = nasArchive;
+ 		}
+ 		#endregion
+ 
+@@ -86,7 +87,7 @@
+                 try
+                 {
+                     // Load up related classes.
+-                    using (IReadContext readContext = _hsmArchive.PersistentStore.OpenReadContext())
++                    using (IReadContext readContext = _nasArchive.PersistentStore.OpenReadContext())
+                     {
+                         _archiveStudyStorage = ArchiveStudyStorage.Load(readContext, queueItem.ArchiveStudyStorageKey);
+                         _serverSyntax = ServerTransferSyntax.Load(readContext, _archiveStudyStorage.ServerTransferSyntaxKey);
+@@ -105,7 +106,7 @@
+ 								Platform.Log(LogLevel.Error, "Unable to find storage location, rescheduling restore request to {0}",
+ 											 scheduleTime);
+ 								queueItem.FailureDescription = "Unable to find storage location, rescheduling request.";
+-								_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
++								_nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
+ 								return;
+ 							}
+                         }
+@@ -120,17 +121,17 @@
+                     string destinationFolder;
+                     if (_location == null)
+                     {
+-                        ServerFilesystemInfo fs = _hsmArchive.Selector.SelectFilesystem();
++                        ServerFilesystemInfo fs = _nasArchive.Selector.SelectFilesystem();
+                         if (fs == null)
+                         {
+                             DateTime scheduleTime = Platform.Time.AddMinutes(5);
+                             Platform.Log(LogLevel.Error, "No writeable filesystem for restore, rescheduling restore request to {0}",
+                                          scheduleTime);
+                             queueItem.FailureDescription = "No writeable filesystem for restore, rescheduling request.";
+-                            _hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
++                            _nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
+                             return;
+                         }
+-                        destinationFolder = Path.Combine(fs.Filesystem.FilesystemPath, _hsmArchive.ServerPartition.PartitionFolder);
++                        destinationFolder = Path.Combine(fs.Filesystem.FilesystemPath, _nasArchive.ServerPartition.PartitionFolder);
+                     }
+                     else
+                         destinationFolder = _location.GetStudyPath();
+@@ -151,7 +152,7 @@
+ 							else if (node.Name.Equals("Uid"))
+ 								studyInstanceUid = node.InnerText;
+ 
+-                    string zipFile = Path.Combine(_hsmArchive.HsmPath, studyFolder);
++                    string zipFile = Path.Combine(_nasArchive.NasPath, studyFolder);
+                     zipFile = Path.Combine(zipFile, studyInstanceUid);
+                     zipFile = Path.Combine(zipFile, filename);
+ 
+@@ -168,12 +169,12 @@
+                     }
+                     catch (Exception ex)
+                     {
+-                        DateTime scheduledTime = Platform.Time.AddSeconds(HsmSettings.Default.ReadFailRescheduleDelaySeconds);
++                        DateTime scheduledTime = Platform.Time.AddSeconds(NasSettings.Default.ReadFailRescheduleDelaySeconds);
+                         Platform.Log(LogLevel.Error, ex, "Archive {0} for Study  {1} is unreadable, rescheduling restore to {2}",
+                                      zipFile, _studyStorage == null ? (_location == null ? string.Empty : _location.StudyInstanceUid) : _studyStorage.StudyInstanceUid,
+                                      scheduledTime);
+                         // Just reschedule in "Restoring" state, the file is unreadable.
+-                        _hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Restoring,
++                        _nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Restoring,
+                                                        scheduledTime);
+                         return;
+                     }
+@@ -187,9 +188,9 @@
+                 {
+                     Platform.Log(LogLevel.Error, e, "Unexpected exception processing restore request for {0} on archive {1}",
+                         _studyStorage == null ? (_location == null ? string.Empty : _location.StudyInstanceUid) : _studyStorage.StudyInstanceUid,
+-                        _hsmArchive.PartitionArchive.Description);
++                        _nasArchive.PartitionArchive.Description);
+                     queueItem.FailureDescription = e.Message;
+-                    _hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
++                    _nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+                 }
+             }
+ 			
+@@ -197,13 +198,13 @@
+ 
+ 		public void RestoreNearlineStudy(RestoreQueue queueItem, string zipFile, string destinationFolder, string studyFolder)
+ 		{
+-            ServerFilesystemInfo fs = _hsmArchive.Selector.SelectFilesystem();
++            ServerFilesystemInfo fs = _nasArchive.Selector.SelectFilesystem();
+ 			if (fs == null)
+ 			{
+ 				DateTime scheduleTime = Platform.Time.AddMinutes(5);
+ 				Platform.Log(LogLevel.Error, "No writeable filesystem for restore, rescheduling restore request to {0}", scheduleTime);
+ 				queueItem.FailureDescription = "No writeable filesystem for restore, rescheduling restore request";
+-				_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
++				_nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Pending, scheduleTime);
+ 				return;
+ 			}
+ 
+@@ -211,7 +212,7 @@
+ 			try
+ 			{
+ 				using (ServerCommandProcessor processor = 
+-                    new ServerCommandProcessor("HSM Restore Offline Study"))
++                    new ServerCommandProcessor("NAS Restore Offline Study"))
+ 				{
+ 					processor.AddCommand(new CreateDirectoryCommand(destinationFolder));
+ 					destinationFolder = Path.Combine(destinationFolder, studyFolder);
+@@ -225,14 +226,14 @@
+ 
+                     // Apply the rules engine.
+ 					ServerActionContext context =
+-						new ServerActionContext(null, fs.Filesystem.GetKey(), _hsmArchive.ServerPartition,
++						new ServerActionContext(null, fs.Filesystem.GetKey(), _nasArchive.ServerPartition,
+ 						                        queueItem.StudyStorageKey) {CommandProcessor = processor};
+ 					processor.AddCommand(
+ 						new ApplyRulesCommand(destinationFolder, _studyStorage.StudyInstanceUid, context));
+ 
+ 					// Do the actual insert into the DB
+ 					InsertFilesystemStudyStorageCommand insertStorageCommand = new InsertFilesystemStudyStorageCommand(
+-													_hsmArchive.PartitionArchive.ServerPartitionKey,
++													_nasArchive.PartitionArchive.ServerPartitionKey,
+ 						                            _studyStorage.StudyInstanceUid,
+ 						                            studyFolder,
+ 						                            fs.Filesystem.GetKey(), _syntax);
+@@ -241,9 +242,9 @@
+ 					if (!processor.Execute())
+ 					{
+ 						Platform.Log(LogLevel.Error, "Unexpected error processing restore request for {0} on archive {1}",
+-						             _studyStorage.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
++						             _studyStorage.StudyInstanceUid, _nasArchive.PartitionArchive.Description);
+ 						queueItem.FailureDescription = processor.FailureReason;
+-						_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
++						_nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+ 					}
+ 					else
+ 					{
+@@ -253,7 +254,7 @@
+ 						using (
+ 							IUpdateContext update = PersistentStoreRegistry.GetDefaultStore().OpenUpdateContext(UpdateContextSyncMode.Flush))
+ 						{
+-							bool retVal = _hsmArchive.UpdateRestoreQueue(update, queueItem, RestoreQueueStatusEnum.Completed, Platform.Time.AddSeconds(60));
++							bool retVal = _nasArchive.UpdateRestoreQueue(update, queueItem, RestoreQueueStatusEnum.Completed, Platform.Time.AddSeconds(60));
+ 							ILockStudy studyLock = update.GetBroker<ILockStudy>();
+ 							LockStudyParameters parms = new LockStudyParameters
+ 							                            	{
+@@ -265,14 +266,14 @@
+ 							{
+ 								string message =
+ 									String.Format("Study {0} on partition {1} failed to unlock.", _studyStorage.StudyInstanceUid,
+-									              _hsmArchive.ServerPartition.Description);
++									              _nasArchive.ServerPartition.Description);
+ 								Platform.Log(LogLevel.Info, message);
+ 								throw new ApplicationException(message);
+ 							}
+ 							update.Commit();
+ 
+ 							Platform.Log(LogLevel.Info, "Successfully restored study: {0} on archive {1}", _studyStorage.StudyInstanceUid,
+-										 _hsmArchive.PartitionArchive.Description);
++										 _nasArchive.PartitionArchive.Description);
+ 
+                             OnStudyRestored(restoredLocation);
+ 						}
+@@ -288,8 +289,8 @@
+ 			catch (Exception e)
+ 			{
+ 				Platform.Log(LogLevel.Error, e, "Unexpected exception processing restore request for {0} on archive {1}",
+-							 _studyStorage.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
+-				_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
++							 _studyStorage.StudyInstanceUid, _nasArchive.PartitionArchive.Description);
++				_nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+ 			}
+ 		}
+ 
+@@ -328,7 +329,7 @@
+ 		{
+ 			try
+ 			{
+-				using (ServerCommandProcessor processor = new ServerCommandProcessor("HSM Restore Online Study"))
++				using (ServerCommandProcessor processor = new ServerCommandProcessor("NAS Restore Online Study"))
+ 				{
+ 					using (ZipFile zip = new ZipFile(zipFile))
+ 					{
+@@ -354,7 +355,7 @@
+ 
+ 					// Apply the rules engine.
+ 					ServerActionContext context =
+-						new ServerActionContext(null, _location.FilesystemKey, _hsmArchive.ServerPartition,
++						new ServerActionContext(null, _location.FilesystemKey, _nasArchive.ServerPartition,
+ 												queueItem.StudyStorageKey) {CommandProcessor = processor};
+ 					processor.AddCommand(
+ 						new ApplyRulesCommand(destinationFolder, _location.StudyInstanceUid, context));
+@@ -362,16 +363,16 @@
+ 					if (!processor.Execute())
+ 					{
+ 						Platform.Log(LogLevel.Error, "Unexpected error processing restore request for {0} on archive {1}",
+-									 _location.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
++									 _location.StudyInstanceUid, _nasArchive.PartitionArchive.Description);
+ 						queueItem.FailureDescription = processor.FailureReason;
+-						_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
++						_nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+ 					}
+ 					else
+ 					{
+ 						// Unlock the Queue Entry and set to complete
+ 						using (IUpdateContext update = PersistentStoreRegistry.GetDefaultStore().OpenUpdateContext(UpdateContextSyncMode.Flush))
+ 						{
+-							_hsmArchive.UpdateRestoreQueue(update, queueItem, RestoreQueueStatusEnum.Completed, Platform.Time.AddSeconds(60));
++							_nasArchive.UpdateRestoreQueue(update, queueItem, RestoreQueueStatusEnum.Completed, Platform.Time.AddSeconds(60));
+ 							ILockStudy studyLock = update.GetBroker<ILockStudy>();
+ 							LockStudyParameters parms = new LockStudyParameters
+ 							                            	{
+@@ -382,13 +383,13 @@
+ 							if (!parms.Successful || !retVal)
+ 							{
+ 								Platform.Log(LogLevel.Info, "Study {0} on partition {1} failed to unlock.", _location.StudyInstanceUid,
+-											 _hsmArchive.ServerPartition.Description);
++											 _nasArchive.ServerPartition.Description);
+ 							}
+ 
+ 							update.Commit();
+ 
+ 							Platform.Log(LogLevel.Info, "Successfully restored study: {0} on archive {1}", _location.StudyInstanceUid,
+-										 _hsmArchive.PartitionArchive.Description);
++										 _nasArchive.PartitionArchive.Description);
+ 
+                             OnStudyRestored(_location);
+ 						}
+@@ -398,9 +399,9 @@
+ 			catch (Exception e)
+ 			{
+ 				Platform.Log(LogLevel.Error, e, "Unexpected exception processing restore request for {0} on archive {1}",
+-							 _location.StudyInstanceUid, _hsmArchive.PartitionArchive.Description);
++							 _location.StudyInstanceUid, _nasArchive.PartitionArchive.Description);
+ 				queueItem.FailureDescription = e.Message;
+-				_hsmArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
++				_nasArchive.UpdateRestoreQueue(queueItem, RestoreQueueStatusEnum.Failed, Platform.Time);
+ 			}
+ 		}
+ 	}
+Index: Properties/AssemblyInfo.cs
+===================================================================
+--- Properties/AssemblyInfo.cs	(revision 16135)
++++ Properties/AssemblyInfo.cs	(working copy)
+@@ -38,12 +38,12 @@
+ // General Information about an assembly is controlled through the following 
+ // set of attributes. Change these attribute values to modify the information
+ // associated with an assembly.
+-[assembly: AssemblyTitle("ClearCanvas.ImageServer.Services.Archiving.Hsm")]
++[assembly: AssemblyTitle("Martin.ImageServer.Services.Archiving.Nas")]
+ [assembly: AssemblyDescription("")]
+ [assembly: AssemblyConfiguration("")]
+-[assembly: AssemblyCompany("ClearCanvas Inc.")]
+-[assembly: AssemblyProduct("ClearCanvas.ImageServer.Services.Archiving.Hsm")]
+-[assembly: AssemblyCopyright("Copyright (c) 2009")]
++[assembly: AssemblyCompany("")]
++[assembly: AssemblyProduct("Martin.ImageServer.Services.Archiving.Nas")]
++[assembly: AssemblyCopyright("")]
+ [assembly: AssemblyTrademark("")]
+ [assembly: AssemblyCulture("")]
+ 
+@@ -53,7 +53,7 @@
+ [assembly: ComVisible(false)]
+ 
+ // The following GUID is for the ID of the typelib if this project is exposed to COM
+-[assembly: Guid("3301b3f0-7915-476d-bd1a-7a588c05c733")]
++[assembly: Guid("4D42FD2E-2B3A-404F-AA99-3DB735E30AF7")]
+ 
+ // Version information for an assembly consists of the following four values:
+ //
+Index: RestoreProcessorContext.cs
+===================================================================
+--- RestoreProcessorContext.cs	(revision 16135)
++++ RestoreProcessorContext.cs	(working copy)
+@@ -35,7 +35,7 @@
+ using ClearCanvas.ImageServer.Common.CommandProcessor;
+ using ClearCanvas.ImageServer.Model;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+     /// <summary>
+     /// Represents the execution context of a <cref="RestoreQueue"/> item.
+@@ -43,7 +43,7 @@
+     public class RestoreProcessorContext : ExecutionContext
+     {
+         #region Private Fields
+-        private readonly Model.RestoreQueue _item;
++        private readonly RestoreQueue _item;
+         #endregion
+ 
+         #region Constructors
+Index: StudyStorageValidator.cs
+===================================================================
+--- StudyStorageValidator.cs	(revision 16135)
++++ StudyStorageValidator.cs	(working copy)
+@@ -37,7 +37,7 @@
+ using ClearCanvas.ImageServer.Core.Validation;
+ using ClearCanvas.ImageServer.Model;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 
+     /// <summary>
+Index: UpdateStudySizeInDBCommand.cs
+===================================================================
+--- UpdateStudySizeInDBCommand.cs	(revision 16135)
++++ UpdateStudySizeInDBCommand.cs	(working copy)
+@@ -36,7 +36,7 @@
+ using ClearCanvas.ImageServer.Model;
+ using ClearCanvas.ImageServer.Model.EntityBrokers;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+     /// <summary>
+     /// Command to update the Study Size in the database.
+Index: UpdateStudyStateCommand.cs
+===================================================================
+--- UpdateStudyStateCommand.cs	(revision 16135)
++++ UpdateStudyStateCommand.cs	(working copy)
+@@ -34,7 +34,7 @@
+ using ClearCanvas.ImageServer.Model;
+ using ClearCanvas.ImageServer.Model.EntityBrokers;
+ 
+-namespace ClearCanvas.ImageServer.Services.Archiving.Hsm
++namespace Martin.ImageServer.Services.Archiving.Nas
+ {
+ 	public class UpdateStudyStateCommand : ServerDatabaseCommand
+ 	{
