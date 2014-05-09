@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:aim="http://www.radiology.northwestern.edu/aim/1/ontology/1" targetNamespace="http://www.radiology.northwestern.edu/aim/1/ontology/1" elementFormDefault="qualified">
+    <xs:element name="AnnotationDescriptionXML" type="aim:AnnotationDescriptionXML"/>
+    <xs:complexType name="AnnotationDescriptionXML">
+        <xs:sequence>
+            <xs:element name="anatomicEntityCollectionXML" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="AnatomicEntityXML" type="aim:AnatomicEntityXML" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="imagingObservationCollectionXML" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ImagingObservationXML" type="aim:ImagingObservationXML" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ImagingObservationCharacteristicXML">
+        <xs:sequence>
+            <xs:element name="codeMeaning" type="xs:string"/>
+            <xs:element name="codingSchemeDesignator" type="xs:string"/>
+            <xs:element name="codeValue" type="xs:string"/>
+            <xs:element name="comment" type="xs:string" minOccurs="0"/>
+            <xs:element name="relationship" type="xs:string"/>
+            <xs:element name="relatedImagingObservationCharacteristicXML" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ImagingObservationCharacteristicXML" type="aim:ImagingObservationCharacteristicXML" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AnatomicEntityXML">
+        <xs:sequence>
+            <xs:element name="codeMeaning" type="xs:string"/>
+            <xs:element name="codingSchemeDesignator" type="xs:string"/>
+            <xs:element name="codeValue" type="xs:string"/>
+            <xs:element name="relationship" type="xs:string"/>
+            <xs:element name="relatedAnatomicEntityXML" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="AnatomicEntityXML" type="aim:AnatomicEntityXML" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ImagingObservationXML">
+        <xs:sequence>
+            <xs:element name="codeMeaning" type="xs:string"/>
+            <xs:element name="codingSchemeDesignator" type="xs:string"/>
+            <xs:element name="codeValue" type="xs:string"/>
+            <xs:element name="comment" type="xs:string" minOccurs="0"/>
+            <xs:element name="relationship" type="xs:string"/>
+            <xs:element name="relatedImagingObservationXML" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ImagingObservationXML" type="aim:ImagingObservationXML" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="imagingObservationCharacteristicCollectionXML" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ImagingObservationCharacteristicXML" type="aim:ImagingObservationCharacteristicXML" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
