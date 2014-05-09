@@ -1,7 +1,7 @@
 ClearCanvas-Contrib
 ===================
 
-This repository is for community-contributed extensions to the ClearCanvas platform.
+This repository is for community-contributed extensions to the ClearCanvas platform. It is intended to provide a central location for ClearCanvas plugin developers to exchange plugins.
 
 Each contribution has its own top-level folder within the repository, and each contribution is licensed separately by the contributor, as per the license file present in the folder.
 
