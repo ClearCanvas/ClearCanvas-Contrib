@@ -1,0 +1,5 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ReferencePath>C:\Program Files\ClearCanvas\ClearCanvas Workstation\common\;C:\Program Files\ClearCanvas\ClearCanvas Workstation\plugins\</ReferencePath>
+  </PropertyGroup>
+</Project>

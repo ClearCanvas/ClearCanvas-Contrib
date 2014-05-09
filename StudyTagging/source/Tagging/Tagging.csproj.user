@@ -1,0 +1,12 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Projects\Xian\PluginContest\build\Debug\ClearCanvas.Desktop.Executable.exe</StartProgram>
+    <StartWorkingDirectory>C:\Projects\Xian\PluginContest\build\Debug</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Projects\Xian\PluginContest\build\Release\ClearCanvas.Desktop.Executable.exe</StartProgram>
+    <StartWorkingDirectory>C:\Projects\Xian\PluginContest\build\Release\</StartWorkingDirectory>
+  </PropertyGroup>
+</Project>

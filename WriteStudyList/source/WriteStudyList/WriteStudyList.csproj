@@ -1,0 +1,108 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B4033403-7544-403C-85D5-BFFEF72D8C20}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WriteStudyList</RootNamespace>
+    <AssemblyName>WriteStudyList</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)\build\Debug\plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)\build\Release\plugins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ClearCanvas.Common, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\common\ClearCanvas.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearCanvas.Desktop, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\plugins\ClearCanvas.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearCanvas.Dicom, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\common\ClearCanvas.Dicom.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearCanvas.ImageViewer, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\plugins\ClearCanvas.ImageViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearCanvas.ImageViewer.Explorer.Dicom, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\plugins\ClearCanvas.ImageViewer.Explorer.Dicom.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearCanvas.ImageViewer.Explorer.Local, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\plugins\ClearCanvas.ImageViewer.Explorer.Local.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearCanvas.ImageViewer.Services, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\common\ClearCanvas.ImageViewer.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="ClearCanvas.ImageViewer.Services.Tools, Version=1.3.8146.27242, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\ClearCanvas\SDK\1.3\bin\redistributable\plugins\ClearCanvas.ImageViewer.Services.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SR.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WriteStudyTool.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SR.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\WriteStudyToolLarge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\WriteStudyToolMedium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\WriteStudyToolSmall.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)$(TargetFileName)" "C:\Program Files\ClearCanvas\ClearCanvas Workstation\plugins"
+copy "$(TargetDir)$(TargetFileName)" "C:\Users\Seth\Documents\My Dropbox\DICOM\ClearCanvas\Plugins"
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>
