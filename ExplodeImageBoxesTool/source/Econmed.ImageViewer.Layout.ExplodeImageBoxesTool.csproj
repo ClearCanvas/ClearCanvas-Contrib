@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\</OutputPath>
+    <OutputPath>c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -46,7 +46,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\</OutputPath>
+    <OutputPath>c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -54,19 +54,19 @@
   <ItemGroup>
     <Reference Include="ClearCanvas.Common, Version=7.1.10939.12110, Culture=neutral, PublicKeyToken=ef419f6a04216132, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\common\ClearCanvas.Common.dll</HintPath>
+      <HintPath>c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\common\ClearCanvas.Common.dll</HintPath>
     </Reference>
     <Reference Include="ClearCanvas.Desktop, Version=13.2.19401.1661, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.Desktop.dll</HintPath>
+      <HintPath>c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="ClearCanvas.Dicom, Version=13.2.19401.1661, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.Dicom.dll</HintPath>
+      <HintPath>c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.Dicom.dll</HintPath>
     </Reference>
     <Reference Include="ClearCanvas.ImageViewer, Version=13.2.19401.1661, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.ImageViewer.dll</HintPath>
+      <HintPath>c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.ImageViewer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
