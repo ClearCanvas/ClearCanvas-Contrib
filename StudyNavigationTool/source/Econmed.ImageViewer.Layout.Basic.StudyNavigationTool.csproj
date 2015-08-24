@@ -70,7 +70,7 @@
     </Reference>
     <Reference Include="ClearCanvas.ImageViewer.Layout.Basic, Version=13.2.19401.1661, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.ImageViewer.Layout.Basic.dll</HintPath>
+      <HintPath>c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer\plugins\ClearCanvas.ImageViewer.Layout.Basic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
