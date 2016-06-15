@@ -18,7 +18,8 @@
 @echo off
 cls
 setlocal
-set /p installationPath=Enter the ClearCanvas Workstation or DicomViewer installation directory (e.g. c:\Program Files\ClearCanvas\ClearCanvas Workstation): 
+set installationPath=c:\Program Files\ClearCanvas\ClearCanvas DICOM Viewer
+set /p installationPath=Enter the ClearCanvas Workstation or DicomViewer installation directory [%installationPath%]: 
 echo.
 pushd %installationPath%
 %SystemRoot%\Microsoft.NET\Framework\v4.0.30319\csc.exe /nologo ^
