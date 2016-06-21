@@ -1,0 +1,3 @@
+[submodule "HangingProtocols"]
+	path = HangingProtocols
+	url = https://github.com/econmed/Econmed.ImageViewer.Layout.HangingProtocols
